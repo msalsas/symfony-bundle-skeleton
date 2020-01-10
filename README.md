@@ -16,7 +16,7 @@ Installation
 ------------
 
 ```bash
-$ git clone https://github.com/msalsas/bundle-skeleton.git
+$ git clone https://github.com/msalsas/symfony-bundle-skeleton.git
 ```
 
 Install Composer dependencies:
@@ -33,7 +33,7 @@ There's no need to configure anything to run the application. If you have
 browser at the given URL (<https://localhost:8000> by default):
 
 ```bash
-$ cd bundle-skeleton/
+$ cd symfony-bundle-skeleton/
 $ symfony serve
 ```
 
@@ -47,7 +47,7 @@ Tests
 Execute this command to run tests:
 
 ```bash
-$ cd bundle-skeleton/
+$ cd symfony-bundle-skeleton/
 $ ./bin/phpunit
 ```
 
