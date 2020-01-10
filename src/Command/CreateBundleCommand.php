@@ -100,39 +100,39 @@ protected function initialize(InputInterface $input, OutputInterface $output): v
      * users, this method is a nice way to fall back and prevent errors.
      */
     protected function interact(InputInterface $input, OutputInterface $output)
-{
-    if (null !== $input->getArgument('domain-name') && null !== $input->getArgument('bundle-name')) {
-        return;
-    }
+    {
+        if (null !== $input->getArgument('domain-name') && null !== $input->getArgument('bundle-name')) {
+            return;
+        }
 
-    $this->io->title('Create Bundle Command Interactive Wizard');
-    $this->io->text([
-        'If you prefer to not use this interactive wizard, provide the',
-        'arguments required by this command as follows:',
-        '',
-        ' $ php bin/console skeleton-bundle:create domain-name bundle-name',
-        '',
-        'Now we\'ll ask you for the value of all the missing command arguments.',
-    ]);
+        $this->io->title('Create Bundle Command Interactive Wizard');
+        $this->io->text([
+            'If you prefer to not use this interactive wizard, provide the',
+            'arguments required by this command as follows:',
+            '',
+            ' $ php bin/console skeleton-bundle:create domain-name bundle-name',
+            '',
+            'Now we\'ll ask you for the value of all the missing command arguments.',
+        ]);
 
-    // Ask for the domain-name if it's not defined
-    $domainName = $input->getArgument('domain-name');
-    if (null !== $domainName) {
-        $this->io->text(' > <info>Domain name</info>: '.$domainName);
-    } else {
-        $domainName = $this->io->ask('Domain name', null, [$this->validator, 'validateDomainName']);
-        $input->setArgument('domain-name', $domainName);
-    }
+        // Ask for the domain-name if it's not defined
+        $domainName = $input->getArgument('domain-name');
+        if (null !== $domainName) {
+            $this->io->text(' > <info>Domain name</info>: '.$domainName);
+        } else {
+            $domainName = $this->io->ask('Domain name', null, [$this->validator, 'validateDomainName']);
+            $input->setArgument('domain-name', $domainName);
+        }
 
-    // Ask for the bundle-name if it's not defined
-    $bundleName = $input->getArgument('bundle-name');
-    if (null !== $bundleName) {
-        $this->io->text(' > <info>Bundle Name</info>: '.u('*')->repeat(u($bundleName)->length()));
-    } else {
-        $bundleName = $this->io->ask('Bundle Name', null, [$this->validator, 'validateBundleName']);
-        $input->setArgument('bundle-name', $bundleName);
+        // Ask for the bundle-name if it's not defined
+        $bundleName = $input->getArgument('bundle-name');
+        if (null !== $bundleName) {
+            $this->io->text(' > <info>Bundle Name</info>: '.u('*')->repeat(u($bundleName)->length()));
+        } else {
+            $bundleName = $this->io->ask('Bundle Name', null, [$this->validator, 'validateBundleName']);
+            $input->setArgument('bundle-name', $bundleName);
+        }
     }
-}
 
     /**
      * This method is executed after interact() and initialize(). It usually
@@ -177,6 +177,10 @@ protected function initialize(InputInterface $input, OutputInterface $output): v
         if (!strpos($bundleName, '-bundle')) {
             $bundleName = str_replace(' bundle', 'bundle', $bundleName);
             $bundleName = str_replace('bundle', '-bundle', $bundleName);
+        }
+
+        if (!strpos($bundleName, 'bundle')) {
+            $bundleName .= '-bundle';
         }
 
         return $bundleName;
