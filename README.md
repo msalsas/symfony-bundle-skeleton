@@ -14,17 +14,14 @@ Requirements
 Installation
 ------------
 
-[Download Symfony][4] to install the `symfony` binary on your computer and run
-this command:
-
 ```bash
-$ symfony new --demo my_project
+$ git clone https://github.com/msalsas/bundle-skeleton.git
 ```
 
-Alternatively, you can use Composer:
+Install Composer dependencies:
 
 ```bash
-$ composer create-project symfony/symfony-demo my_project
+$ composer install
 ```
 
 Usage
@@ -35,7 +32,7 @@ There's no need to configure anything to run the application. If you have
 browser at the given URL (<https://localhost:8000> by default):
 
 ```bash
-$ cd my_project/
+$ cd bundle-skeleton/
 $ symfony serve
 ```
 
@@ -49,7 +46,7 @@ Tests
 Execute this command to run tests:
 
 ```bash
-$ cd my_project/
+$ cd bundle-skeleton/
 $ ./bin/phpunit
 ```
 
