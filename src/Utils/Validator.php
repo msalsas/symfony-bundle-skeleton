@@ -69,4 +69,30 @@ class Validator
 
         return $fullName;
     }
+
+    public function validateDomainName(?string $domainName): string
+    {
+        if (empty($domainName)) {
+            throw new InvalidArgumentException('The domain name can not be empty.');
+        }
+
+        if (1 !== preg_match('/^[a-z-]+$/', $domainName)) {
+            throw new InvalidArgumentException('The domain name must contain only lowercase latin characters and dashes.');
+        }
+
+        return $domainName;
+    }
+
+    public function validateBundleName(?string $bundleName): string
+    {
+        if (empty($bundleName)) {
+            throw new InvalidArgumentException('The bundle name can not be empty.');
+        }
+
+        if (1 !== preg_match('/^[a-z-]+$/', $bundleName)) {
+            throw new InvalidArgumentException('The bundle name must contain only lowercase latin characters and dashes.');
+        }
+
+        return $bundleName;
+    }
 }
