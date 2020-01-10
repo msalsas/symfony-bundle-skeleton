@@ -1,8 +1,7 @@
-Symfony Demo Application
+Symfony Bundle Skeleton
 ========================
 
-The "Symfony Demo Application" is a reference application created to show how
-to develop applications following the [Symfony Best Practices][1].
+The "Symfony Bundle Skeleton" is an application for creating reusable Symfony bundles.
 
 Requirements
 ------------
