@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use function Symfony\Component\String\u;
@@ -38,6 +39,9 @@ use function Symfony\Component\String\u;
  */
 class CreateBundleCommand extends Command
 {
+    const SEPARATOR = '/';
+    const BUNDLE_ROOT = self::SEPARATOR . 'lib';
+
     // to make your command lazily loaded, configure the $defaultName static property,
     // so it will be instantiated only when the command is actually called.
     protected static $defaultName = 'skeleton-bundle:create';
@@ -50,12 +54,13 @@ class CreateBundleCommand extends Command
     private $entityManager;
     private $passwordEncoder;
     private $validator;
-    private $users;
+    private $projectDir;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, Validator $validator, UserRepository $users)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, Validator $validator, UserRepository $users)
     {
         parent::__construct();
 
+        $this->projectDir = $kernel->getProjectDir();
         $this->entityManager = $em;
         $this->passwordEncoder = $encoder;
         $this->validator = $validator;
@@ -77,11 +82,11 @@ class CreateBundleCommand extends Command
         ;
     }
 
-/**
- * This optional method is the first one executed for a command after configure()
- * and is useful to initialize properties based on the input arguments and options.
- */
-protected function initialize(InputInterface $input, OutputInterface $output): void
+    /**
+     * This optional method is the first one executed for a command after configure()
+     * and is useful to initialize properties based on the input arguments and options.
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         // SymfonyStyle is an optional feature that Symfony provides so you can
         // apply a consistent look to the commands of your application.
@@ -152,8 +157,8 @@ protected function initialize(InputInterface $input, OutputInterface $output): v
         // make sure to validate the bundle data is correct
         $this->validateBundleData($domainName, $bundleName);
 
-        //TODO: Create the bundle skeleton in /lib
-
+        $this->createBundleSkeletonDir($domainName, $bundleName);
+        //TODO: Create the bundle skeleton files
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -163,6 +168,22 @@ protected function initialize(InputInterface $input, OutputInterface $output): v
         }
 
         return 0;
+    }
+
+    private function createBundleSkeletonDir($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+
+        if (!mkdir($dir, 0755, true)) {
+            die('Error creating directory ' . $dir);
+        }
+
+        return true;
+    }
+
+    private function getBundleSkeletonDir($domainName, $bundleName)
+    {
+        return $this->projectDir . self::BUNDLE_ROOT . self::SEPARATOR . $domainName . self::SEPARATOR . $bundleName;
     }
 
     private function sanitizeDomainName($domainName): string
