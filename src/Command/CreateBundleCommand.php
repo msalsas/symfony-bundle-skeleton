@@ -159,6 +159,7 @@ class CreateBundleCommand extends Command
 
         $this->createBundleSkeletonDir($domainName, $bundleName);
         //TODO: Create the bundle skeleton files
+        $this->createBundleMainFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -179,6 +180,39 @@ class CreateBundleCommand extends Command
         }
 
         return true;
+    }
+
+    private function createBundleMainFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = $this->getBundleFullName($domainName, $bundleName) . '.php';
+        $path = $dir . self::SEPARATOR . $filename;
+        $oldFilename = $this->getBundleSkeletonDir('acme', 'foo-bundle') . self::SEPARATOR . 'AcmeFooBundle.php';
+
+        if (!copy($oldFilename, $path)) {
+            die('Error renaming file ' . $oldFilename);
+        }
+
+        $str = file_get_contents($path);
+        $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $str);
+        $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
+        file_put_contents($path, $replace);
+
+        return true;
+    }
+
+    private function getBundleFullName($domainName, $bundleName)
+    {
+        return preg_replace_callback('/-([a-z])/', function($word) {
+            return strtoupper($word[1]);
+        }, ucfirst($domainName) . ucfirst($bundleName));
+    }
+
+    private function getDomainOrBundleName($domainOrBundleName)
+    {
+        return preg_replace_callback('/-([a-z])/', function($word) {
+            return strtoupper($word[1]);
+        }, ucfirst($domainOrBundleName));
     }
 
     private function getBundleSkeletonDir($domainName, $bundleName)
