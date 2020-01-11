@@ -28,3 +28,8 @@ yarn-error.log
 
 ###> Jetbrains (IDE) ###
 /.idea
+###< Jetbrains (IDE) ###
+
+###> Created bundle ###
+/lib
+###< Created bundle  ###
