@@ -76,7 +76,7 @@ class Validator
             throw new InvalidArgumentException('The domain name can not be empty.');
         }
 
-        if (1 !== preg_match('/^[a-z-]+$/', $domainName)) {
+        if (1 !== preg_match('/^[A-Za-z-]+$/', $domainName)) {
             throw new InvalidArgumentException('The domain name must contain only lowercase latin characters and dashes.');
         }
 
@@ -89,7 +89,7 @@ class Validator
             throw new InvalidArgumentException('The bundle name can not be empty.');
         }
 
-        if (1 !== preg_match('/^[a-z-]+$/', $bundleName)) {
+        if (1 !== preg_match('/^[A-Za-z-]+$/', $bundleName)) {
             throw new InvalidArgumentException('The bundle name must contain only lowercase latin characters and dashes.');
         }
 

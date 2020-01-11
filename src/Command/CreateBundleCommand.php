@@ -188,11 +188,23 @@ class CreateBundleCommand extends Command
 
     private function sanitizeDomainName($domainName): string
     {
+        $domainName = preg_replace('/([A-Z])/', '-$1', $domainName);
+        $domainName = str_replace('--', '-', $domainName);
+        if (strpos($domainName, '-') === 0) {
+            $domainName = substr($domainName, 1);
+        }
+
         return strtolower($domainName);
     }
 
     private function sanitizeBundleName($bundleName): string
     {
+        $bundleName = preg_replace('/([A-Z])/', '-$1', $bundleName);
+        $bundleName = str_replace('--', '-', $bundleName);
+        if (strpos($bundleName, '-') === 0) {
+            $bundleName = substr($bundleName, 1);
+        }
+
         $bundleName = strtolower($bundleName);
 
         if (!strpos($bundleName, '-bundle')) {
