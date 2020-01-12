@@ -169,6 +169,9 @@ class CreateBundleCommand extends Command
         $this->createBundleConfigDir($domainName, $bundleName);
         $this->createBundleDoctrineDir($domainName, $bundleName);
         $this->createBundleRoutingDir($domainName, $bundleName);
+        $this->createBundleServicesFile($domainName, $bundleName);
+        $this->createBundleDocDir($domainName, $bundleName);
+        $this->createBundleIndexDocFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -298,6 +301,39 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
+    private function createBundleServicesFile($domainName, $bundleName)
+    {
+        $dir = $this->getConfigDir($domainName, $bundleName);
+        $filename = 'services.xml';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getServicesPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+
+        return $this->replaceFileContents($domainName, $bundleName, $path);
+    }
+
+    private function createBundleDocDir($domainName, $bundleName)
+    {
+        $dir = $this->getDocDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleIndexDocFile($domainName, $bundleName)
+    {
+        $dir = $this->getDocDir($domainName, $bundleName);
+        $filename = 'index.rst';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getIndexDocPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContents($domainName, $bundleName, $path);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -357,12 +393,17 @@ class CreateBundleCommand extends Command
 
     private function getDoctrineDir($domainName, $bundleName)
     {
-        return $this->getResourcesDir($domainName, $bundleName) . '/doctrine';
+        return $this->getConfigDir($domainName, $bundleName) . '/doctrine';
     }
 
     private function getRoutingDir($domainName, $bundleName)
     {
-        return $this->getResourcesDir($domainName, $bundleName) . '/routing';
+        return $this->getConfigDir($domainName, $bundleName) . '/routing';
+    }
+
+    private function getDocDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/doc';
     }
 
     private function getBundleFullName($domainName, $bundleName)
