@@ -164,6 +164,11 @@ class CreateBundleCommand extends Command
         $this->createBundleDependencyInjectionDir($domainName, $bundleName);
         $this->createBundleExtensionFile($domainName, $bundleName);
         $this->createBundleConfigurationFile($domainName, $bundleName);
+        $this->createBundleEntityDir($domainName, $bundleName);
+        $this->createBundleResourcesDir($domainName, $bundleName);
+        $this->createBundleConfigDir($domainName, $bundleName);
+        $this->createBundleDoctrineDir($domainName, $bundleName);
+        $this->createBundleRoutingDir($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -258,6 +263,41 @@ class CreateBundleCommand extends Command
         return $this->replaceFileContents($domainName, $bundleName, $path);
     }
 
+    private function createBundleEntityDir($domainName, $bundleName)
+    {
+        $dir = $this->getEntityDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleResourcesDir($domainName, $bundleName)
+    {
+        $dir = $this->getResourcesDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleConfigDir($domainName, $bundleName)
+    {
+        $dir = $this->getConfigDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleDoctrineDir($domainName, $bundleName)
+    {
+        $dir = $this->getDoctrineDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleRoutingDir($domainName, $bundleName)
+    {
+        $dir = $this->getRoutingDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -298,6 +338,31 @@ class CreateBundleCommand extends Command
     private function getDependencyInjectionDir($domainName, $bundleName)
     {
         return $this->getBundleSkeletonDir($domainName, $bundleName) . '/DependencyInjection';
+    }
+
+    private function getEntityDir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/Entity';
+    }
+
+    private function getResourcesDir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/Resources';
+    }
+
+    private function getConfigDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/config';
+    }
+
+    private function getDoctrineDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/doctrine';
+    }
+
+    private function getRoutingDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/routing';
     }
 
     private function getBundleFullName($domainName, $bundleName)
