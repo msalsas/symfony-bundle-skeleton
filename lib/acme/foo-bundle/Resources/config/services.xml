@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <!-- TODO: Add you parameters here -->
+        <parameter key="acme_foo.bar" />
+        <parameter key="acme_foo.integer_foo" />
+        <parameter key="acme_foo.integer_bar" />
+    </parameters>
+    <services>
+        <!-- TODO: Add your services here -->
+        <!-- Service -->
+        <service id="acme_foo.service" class="Acme\FooBundle\Service\Service">
+            <!-- TODO: Add your service constructor parameters here -->
+            <argument key="$em" type="service" id="doctrine.orm.entity_manager"/>
+            <argument key="$token" type="service" id="security.token_storage"/>
+            <argument key="$requestStack" type="service" id="request_stack"/>
+            <argument key="$translator" type="service" id="translator"/>
+            <argument key="$bar" type="string">%acme_foo.bar%</argument>
+            <argument key="$integerFoo" type="string">%acme_foo.integer_foo%</argument>
+            <argument key="$integerBar" type="string">%acme_foo.integer_bar%</argument>
+        </service>
+
+        <!-- TODO: Add the alias for your services here -->
+        <service id="Acme\FooBundle\Service\Service" alias="acme_foo.service" />
+        <!-- End Service -->
+
+        <!-- TODO: Add your controllers here -->
+        <!-- Controller -->
+        <service id="acme_foo.controller" class="Acme\FooBundle\Controller\AcmeFooController" public="true">
+            <!-- TODO: Add your controller constructor parameters here -->
+            <argument key="$service" type="service" id="acme_foo.service"/>
+        </service>
+
+        <!-- TODO: Add the alias for your services here -->
+        <service id="Acme\FooBundle\Controller\AcmeFooController" alias="acme_foo.controller" public="true"/>
+        <!-- End Controller -->
+    </services>
+</container>
