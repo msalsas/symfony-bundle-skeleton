@@ -172,6 +172,9 @@ class CreateBundleCommand extends Command
         $this->createBundleServicesFile($domainName, $bundleName);
         $this->createBundleDocDir($domainName, $bundleName);
         $this->createBundleIndexDocFile($domainName, $bundleName);
+        $this->createBundlePublicDir($domainName, $bundleName);
+        $this->createBundleCssDir($domainName, $bundleName);
+        $this->createBundleJsDir($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -334,6 +337,27 @@ class CreateBundleCommand extends Command
         return $this->replaceFileContents($domainName, $bundleName, $path);
     }
 
+    private function createBundlePublicDir($domainName, $bundleName)
+    {
+        $dir = $this->getPublicDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleCssDir($domainName, $bundleName)
+    {
+        $dir = $this->getCssDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleJsDir($domainName, $bundleName)
+    {
+        $dir = $this->getJsDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -404,6 +428,21 @@ class CreateBundleCommand extends Command
     private function getDocDir($domainName, $bundleName)
     {
         return $this->getResourcesDir($domainName, $bundleName) . '/doc';
+    }
+
+    private function getPublicDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/public';
+    }
+
+    private function getCssDir($domainName, $bundleName)
+    {
+        return $this->getPublicDir($domainName, $bundleName) . '/css';
+    }
+
+    private function getJsDir($domainName, $bundleName)
+    {
+        return $this->getPublicDir($domainName, $bundleName) . '/js';
     }
 
     private function getBundleFullName($domainName, $bundleName)
