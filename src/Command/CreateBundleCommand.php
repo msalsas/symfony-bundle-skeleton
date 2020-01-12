@@ -163,6 +163,7 @@ class CreateBundleCommand extends Command
         $this->createBundleControllerFile($domainName, $bundleName);
         $this->createBundleDependencyInjectionDir($domainName, $bundleName);
         $this->createBundleExtensionFile($domainName, $bundleName);
+        $this->createBundleConfigurationFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -236,6 +237,20 @@ class CreateBundleCommand extends Command
         $path = $this->getPath($dir, $filename);
 
         $oldPath = CreateBundleUtils::getExtensionPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+
+        return $this->replaceFileContents($domainName, $bundleName, $path);
+    }
+
+    private function createBundleConfigurationFile($domainName, $bundleName)
+    {
+        $dir = $this->getDependencyInjectionDir($domainName, $bundleName);
+        $filename = 'Configuration.php';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getConfigurationPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
         $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
