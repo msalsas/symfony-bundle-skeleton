@@ -175,6 +175,10 @@ class CreateBundleCommand extends Command
         $this->createBundlePublicDir($domainName, $bundleName);
         $this->createBundleCssDir($domainName, $bundleName);
         $this->createBundleJsDir($domainName, $bundleName);
+        $this->createBundleTranslationsDir($domainName, $bundleName);
+        $this->createBundleMessagesEnFile($domainName, $bundleName);
+        $this->createBundleMessagesEsFile($domainName, $bundleName);
+        $this->createBundleViewsDir($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -358,6 +362,44 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
+    private function createBundleTranslationsDir($domainName, $bundleName)
+    {
+        $dir = $this->getTranslationsDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleMessagesEnFile($domainName, $bundleName)
+    {
+        $dir = $this->getTranslationsDir($domainName, $bundleName);
+        $filename = 'messages.en.yml';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getMessagesEnPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+    }
+
+    private function createBundleMessagesEsFile($domainName, $bundleName)
+    {
+        $dir = $this->getTranslationsDir($domainName, $bundleName);
+        $filename = 'messages.es.yml';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getMessagesEsPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+    }
+
+    private function createBundleViewsDir($domainName, $bundleName)
+    {
+        $dir = $this->getViewsDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -443,6 +485,16 @@ class CreateBundleCommand extends Command
     private function getJsDir($domainName, $bundleName)
     {
         return $this->getPublicDir($domainName, $bundleName) . '/js';
+    }
+
+    private function getTranslationsDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/translations';
+    }
+
+    private function getViewsDir($domainName, $bundleName)
+    {
+        return $this->getResourcesDir($domainName, $bundleName) . '/views';
     }
 
     private function getBundleFullName($domainName, $bundleName)
