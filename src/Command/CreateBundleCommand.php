@@ -161,6 +161,8 @@ class CreateBundleCommand extends Command
         //TODO: Create the bundle skeleton files
         $this->createBundleMainFile($domainName, $bundleName);
         $this->createBundleControllerFile($domainName, $bundleName);
+        $this->createBundleDependencyInjectionDir($domainName, $bundleName);
+        $this->createBundleExtensionFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -211,20 +213,76 @@ class CreateBundleCommand extends Command
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName) . '/Controller';
         $filename = $this->getBundleName($domainName, $bundleName) . 'Controller.php';
-        $path = $dir . self::SEPARATOR . $filename;
+        $path = $this->getPath($dir, $filename);
 
         $this->createDir($dir);
-        $oldFilename = CreateBundleUtils::getControllerPath($this->projectDir);
+        $oldPath = CreateBundleUtils::getControllerPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
 
-        if (!copy($oldFilename, $path)) {
-            die('Error renaming file ' . $oldFilename);
+        return $this->replaceFileContents($domainName, $bundleName, $path);
+    }
+
+    private function createBundleDependencyInjectionDir($domainName, $bundleName)
+    {
+        $dir = $this->getDependencyInjectionDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleExtensionFile($domainName, $bundleName)
+    {
+        $dir = $this->getDependencyInjectionDir($domainName, $bundleName);
+        $filename = $this->getBundleName($domainName, $bundleName) . 'Extension.php';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getExtensionPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+
+        return $this->replaceFileContents($domainName, $bundleName, $path);
+    }
+
+    private function getPath($dir, $filename)
+    {
+        return $dir . self::SEPARATOR . $filename;
+    }
+
+    private function copyFile($oldPath, $path)
+    {
+        if (!copy($oldPath, $path)) {
+            die('Error renaming file ' . $oldPath);
         }
+    }
 
+    private function replaceFileContents($domainName, $bundleName, $path)
+    {
         $str = file_get_contents($path);
         $replace = str_replace('AcmeFoo', $this->getBundleName($domainName, $bundleName), $str);
+        $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $replace);
+        $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
         file_put_contents($path, $replace);
 
         return true;
+    }
+
+    private function replaceFileContentsWithUnderscores($domainName, $bundleName, $path)
+    {
+        $str = file_get_contents($path);
+
+        $replacement =  substr(preg_replace_callback('/([A-Z])/', function($word) {
+            return '_' . strtolower($word[1]);
+        }, $this->getBundleName($domainName, $bundleName)), 1);
+        $replace = str_replace('acme_foo', $replacement, $str);
+
+        file_put_contents($path, $replace);
+
+        return true;
+    }
+
+    private function getDependencyInjectionDir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/DependencyInjection';
     }
 
     private function getBundleFullName($domainName, $bundleName)

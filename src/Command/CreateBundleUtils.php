@@ -9,7 +9,7 @@ class CreateBundleUtils
     const CONTROLLER_DIR = 'Controller/';
     const CONTROLLER_FILE = 'AcmeFooController.php';
     const DEPENDENCY_INJECTION_DIR = 'DependencyInjection/';
-    const DEPENDENCY_INJECTION_FILE = 'AcmeFooExtension.php';
+    const EXTENSION_FILE = 'AcmeFooExtension.php';
     const CONFIGURATION_FILE = 'Configuration.php';
     const ENTITY_DIR = 'Entity/';
     const RESOURCES_DIR = 'Resources/';
@@ -54,9 +54,9 @@ class CreateBundleUtils
         return self::getRootDir($projectDir) . self::DEPENDENCY_INJECTION_DIR;
     }
 
-    public static function getDependencyInjectionPath($projectDir)
+    public static function getExtensionPath($projectDir)
     {
-        return self::getDependencyInjectionDir($projectDir) . self::DEPENDENCY_INJECTION_FILE;
+        return self::getDependencyInjectionDir($projectDir) . self::EXTENSION_FILE;
     }
 
     public static function getConfigurationPath($projectDir)
