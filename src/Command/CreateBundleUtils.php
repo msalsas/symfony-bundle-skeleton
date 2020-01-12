@@ -5,6 +5,7 @@ namespace App\Command;
 class CreateBundleUtils
 {
     const ROOT_DIR = '/lib/acme/foo-bundle/';
+    const MAIN_FILE = 'AcmeFooBundle.php';
     const CONTROLLER_DIR = 'Controller/';
     const CONTROLLER_FILE = 'AcmeFooController.php';
     const DEPENDENCY_INJECTION_DIR = 'DependencyInjection/';
@@ -28,118 +29,123 @@ class CreateBundleUtils
     const SERVICE_DIR = 'Service/';
     const TEST_DIR = 'Test/';
 
-    public static function getRootDir()
+    public static function getRootDir($projectDir)
     {
-        return self::ROOT_DIR;
+        return $projectDir . self::ROOT_DIR;
     }
 
-    public static function getControllerDir()
+    public static function getMainFilePath($projectDir)
     {
-        return self::getRootDir() . self::CONTROLLER_DIR;
+        return self::getRootDir($projectDir) . self::MAIN_FILE;
     }
 
-    public static function getControllerPath()
+    public static function getControllerDir($projectDir)
     {
-        return self::getControllerDir() . self::CONTROLLER_FILE;
+        return self::getRootDir($projectDir) . self::CONTROLLER_DIR;
     }
 
-    public static function getDependencyInjectionDir()
+    public static function getControllerPath($projectDir)
     {
-        return self::getRootDir() . self::DEPENDENCY_INJECTION_DIR;
+        return self::getControllerDir($projectDir) . self::CONTROLLER_FILE;
     }
 
-    public static function getDependencyInjectionPath()
+    public static function getDependencyInjectionDir($projectDir)
     {
-        return self::getDependencyInjectionDir() . self::DEPENDENCY_INJECTION_FILE;
+        return self::getRootDir($projectDir) . self::DEPENDENCY_INJECTION_DIR;
     }
 
-    public static function getConfigurationPath()
+    public static function getDependencyInjectionPath($projectDir)
     {
-        return self::getDependencyInjectionDir() . self::CONFIGURATION_FILE;
+        return self::getDependencyInjectionDir($projectDir) . self::DEPENDENCY_INJECTION_FILE;
     }
 
-    public static function getEntityDir()
+    public static function getConfigurationPath($projectDir)
     {
-        return self::getRootDir() . self::ENTITY_DIR;
+        return self::getDependencyInjectionDir($projectDir) . self::CONFIGURATION_FILE;
     }
 
-    public static function getResourcesDir()
+    public static function getEntityDir($projectDir)
     {
-        return self::getRootDir() . self::RESOURCES_DIR;
+        return self::getRootDir($projectDir) . self::ENTITY_DIR;
     }
 
-    public static function getConfigDir()
+    public static function getResourcesDir($projectDir)
     {
-        return self::getResourcesDir() . self::CONFIG_DIR;
+        return self::getRootDir($projectDir) . self::RESOURCES_DIR;
     }
 
-    public static function getDoctrineDir()
+    public static function getConfigDir($projectDir)
     {
-        return self::getConfigDir() . self::DOCTRINE_DIR;
+        return self::getResourcesDir($projectDir) . self::CONFIG_DIR;
     }
 
-    public static function getRoutingDir()
+    public static function getDoctrineDir($projectDir)
     {
-        return self::getConfigDir() . self::ROUTING_DIR;
+        return self::getConfigDir($projectDir) . self::DOCTRINE_DIR;
     }
 
-    public static function getServicesPath()
+    public static function getRoutingDir($projectDir)
     {
-        return self::getConfigDir() . self::SERVICES_FILE;
+        return self::getConfigDir($projectDir) . self::ROUTING_DIR;
     }
 
-    public static function getDocDir()
+    public static function getServicesPath($projectDir)
     {
-        return self::getResourcesDir() . self::DOC_DIR;
+        return self::getConfigDir($projectDir) . self::SERVICES_FILE;
     }
 
-    public static function getIndexDocPath()
+    public static function getDocDir($projectDir)
     {
-        return self::getDocDir() . self::INDEX_DOC_FILE;
+        return self::getResourcesDir($projectDir) . self::DOC_DIR;
     }
 
-    public static function getPublicDir()
+    public static function getIndexDocPath($projectDir)
     {
-        return self::getResourcesDir() . self::PUBLIC_DIR;
+        return self::getDocDir($projectDir) . self::INDEX_DOC_FILE;
     }
 
-    public static function getCssDir()
+    public static function getPublicDir($projectDir)
     {
-        return self::getPublicDir() . self::CSS_DIR;
+        return self::getResourcesDir($projectDir) . self::PUBLIC_DIR;
     }
 
-    public static function getJsDir()
+    public static function getCssDir($projectDir)
     {
-        return self::getPublicDir() . self::JS_DIR;
+        return self::getPublicDir($projectDir) . self::CSS_DIR;
     }
 
-    public static function getTranslationsDir()
+    public static function getJsDir($projectDir)
     {
-        return self::getResourcesDir() . self::TRANSLATIONS_DIR;
+        return self::getPublicDir($projectDir) . self::JS_DIR;
     }
 
-    public static function getMessagesEnPath()
+    public static function getTranslationsDir($projectDir)
     {
-        return self::getTranslationsDir() . self::MESSAGES_EN_FILE;
+        return self::getResourcesDir($projectDir) . self::TRANSLATIONS_DIR;
     }
 
-    public static function getMessagesEsPath()
+    public static function getMessagesEnPath($projectDir)
     {
-        return self::getTranslationsDir() . self::MESSAGES_ES_FILE;
+        return self::getTranslationsDir($projectDir) . self::MESSAGES_EN_FILE;
     }
 
-    public static function getViewsDir()
+    public static function getMessagesEsPath($projectDir)
     {
-        return self::getResourcesDir() . self::VIEWS_DIR;
+        return self::getTranslationsDir($projectDir) . self::MESSAGES_ES_FILE;
     }
 
-    public static function getServiceDir()
+    public static function getViewsDir($projectDir)
     {
-        return self::getRootDir() . self::SERVICE_DIR;
+        return self::getResourcesDir($projectDir) . self::VIEWS_DIR;
     }
 
-    public static function getTestDir()
+    public static function getServiceDir($projectDir)
     {
-        return self::getRootDir() . self::TEST_DIR;
+        return self::getRootDir($projectDir) . self::SERVICE_DIR;
+    }
+
+    public static function getTestDir($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::TEST_DIR;
     }
 }

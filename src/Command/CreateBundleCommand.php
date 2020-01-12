@@ -160,6 +160,7 @@ class CreateBundleCommand extends Command
         $this->createBundleSkeletonDir($domainName, $bundleName);
         //TODO: Create the bundle skeleton files
         $this->createBundleMainFile($domainName, $bundleName);
+        $this->createBundleControllerFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -175,6 +176,11 @@ class CreateBundleCommand extends Command
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
 
+        return $this->createDir($dir);
+    }
+
+    private function createDir($dir)
+    {
         if (!mkdir($dir, 0755, true)) {
             die('Error creating directory ' . $dir);
         }
@@ -187,7 +193,7 @@ class CreateBundleCommand extends Command
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
         $filename = $this->getBundleFullName($domainName, $bundleName) . '.php';
         $path = $dir . self::SEPARATOR . $filename;
-        $oldFilename = $this->getBundleSkeletonDir('acme', 'foo-bundle') . self::SEPARATOR . 'AcmeFooBundle.php';
+        $oldFilename = CreateBundleUtils::getMainFilePath($this->projectDir);
 
         if (!copy($oldFilename, $path)) {
             die('Error renaming file ' . $oldFilename);
@@ -196,6 +202,26 @@ class CreateBundleCommand extends Command
         $str = file_get_contents($path);
         $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $str);
         $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
+        file_put_contents($path, $replace);
+
+        return true;
+    }
+
+    private function createBundleControllerFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName) . '/Controller';
+        $filename = $this->getBundleName($domainName, $bundleName) . 'Controller.php';
+        $path = $dir . self::SEPARATOR . $filename;
+
+        $this->createDir($dir);
+        $oldFilename = CreateBundleUtils::getControllerPath($this->projectDir);
+
+        if (!copy($oldFilename, $path)) {
+            die('Error renaming file ' . $oldFilename);
+        }
+
+        $str = file_get_contents($path);
+        $replace = str_replace('AcmeFoo', $this->getBundleName($domainName, $bundleName), $str);
         file_put_contents($path, $replace);
 
         return true;
@@ -213,6 +239,13 @@ class CreateBundleCommand extends Command
         return preg_replace_callback('/-([a-z])/', function($word) {
             return strtoupper($word[1]);
         }, ucfirst($domainOrBundleName));
+    }
+
+    private function getBundleName($domainName, $bundleName)
+    {
+        $bundleFullName = $this->getBundleFullName($domainName, $bundleName);
+
+        return substr($bundleFullName, 0, strlen($bundleFullName) - 6);
     }
 
     private function getBundleSkeletonDir($domainName, $bundleName)
