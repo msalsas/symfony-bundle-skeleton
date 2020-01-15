@@ -1,0 +1,9 @@
+{% macro bar(link) %}
+    <div class="acme-foo-widget-wrapper">
+        <div class="acme-foo-widget">
+            <div class="acme-foo-link-wrapper">
+                <a id="acme-foo-link" href="{{ link }}">{{ acme_foo.bar|trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endmacro link %}
