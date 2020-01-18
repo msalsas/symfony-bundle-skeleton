@@ -187,6 +187,7 @@ class CreateBundleCommand extends Command
         $this->createBundleLicenseFile($domainName, $bundleName);
         $this->createBundleGitIgnoreFile($domainName, $bundleName);
         $this->createBundleTravisFile($domainName, $bundleName);
+        $this->createBundlePhpUnitFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -486,6 +487,18 @@ class CreateBundleCommand extends Command
         $this->copyFile($oldPath, $path);
 
         return true;
+    }
+
+    private function createBundlePhpUnitFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = 'phpunit.xml.dist';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getPhpUnitPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContents($domainName, $bundleName, $path);
     }
 
     private function getPath($dir, $filename)

@@ -34,6 +34,7 @@ class CreateBundleUtils
     const LICENSE_FILE = 'LICENSE';
     const GIT_IGNORE_FILE = '.gitignore';
     const TRAVIS_FILE = '.travis';
+    const PHP_UNIT_FILE = 'phpunit.xml.dist';
 
     public static function getRootDir($projectDir)
     {
@@ -184,4 +185,10 @@ class CreateBundleUtils
     {
         return self::getRootDir($projectDir) . self::TRAVIS_FILE;
     }
+
+    public static function getPhpUnitPath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::PHP_UNIT_FILE;
+    }
+
 }
