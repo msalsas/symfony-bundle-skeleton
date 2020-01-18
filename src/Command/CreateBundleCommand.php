@@ -180,6 +180,8 @@ class CreateBundleCommand extends Command
         $this->createBundleMessagesEsFile($domainName, $bundleName);
         $this->createBundleViewsDir($domainName, $bundleName);
         $this->createBundleWidgetFile($domainName, $bundleName);
+        $this->createBundleServiceDir($domainName, $bundleName);
+        $this->createBundleTestDir($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -399,6 +401,20 @@ class CreateBundleCommand extends Command
         return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["_", "-"]);
     }
 
+    private function createBundleServiceDir($domainName, $bundleName)
+    {
+        $dir = $this->getServiceDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleTestDir($domainName, $bundleName)
+    {
+        $dir = $this->getTestsDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -515,6 +531,16 @@ class CreateBundleCommand extends Command
     private function getViewsDir($domainName, $bundleName)
     {
         return $this->getResourcesDir($domainName, $bundleName) . '/views';
+    }
+
+    private function getServiceDir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/Service';
+    }
+
+    private function getTestsDir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/Tests';
     }
 
     private function getBundleFullName($domainName, $bundleName)
