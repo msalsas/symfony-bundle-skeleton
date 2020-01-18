@@ -186,6 +186,7 @@ class CreateBundleCommand extends Command
         $this->createBundleReadmeFile($domainName, $bundleName);
         $this->createBundleLicenseFile($domainName, $bundleName);
         $this->createBundleGitIgnoreFile($domainName, $bundleName);
+        $this->createBundleTravisFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -470,6 +471,18 @@ class CreateBundleCommand extends Command
         $path = $this->getPath($dir, $filename);
 
         $oldPath = CreateBundleUtils::getGitIgnorePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return true;
+    }
+
+    private function createBundleTravisFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = '.travis';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getTravisPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
         return true;

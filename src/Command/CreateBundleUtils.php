@@ -33,6 +33,7 @@ class CreateBundleUtils
     const README_FILE = 'README.md';
     const LICENSE_FILE = 'LICENSE';
     const GIT_IGNORE_FILE = '.gitignore';
+    const TRAVIS_FILE = '.travis';
 
     public static function getRootDir($projectDir)
     {
@@ -177,5 +178,10 @@ class CreateBundleUtils
     public static function getGitIgnorePath($projectDir)
     {
         return self::getRootDir($projectDir) . self::GIT_IGNORE_FILE;
+    }
+
+    public static function getTravisPath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::TRAVIS_FILE;
     }
 }
