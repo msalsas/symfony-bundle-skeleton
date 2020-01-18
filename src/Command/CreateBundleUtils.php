@@ -26,6 +26,7 @@ class CreateBundleUtils
     const MESSAGES_EN_FILE = 'messages.en.yml';
     const MESSAGES_ES_FILE = 'messages.es.yml';
     const VIEWS_DIR = 'views/';
+    const WIDGET_FILE = 'acme_foo_widget.html.twig';
     const SERVICE_DIR = 'Service/';
     const TEST_DIR = 'Test/';
 
@@ -137,6 +138,11 @@ class CreateBundleUtils
     public static function getViewsDir($projectDir)
     {
         return self::getResourcesDir($projectDir) . self::VIEWS_DIR;
+    }
+
+    public static function getWidgetPath($projectDir)
+    {
+        return self::getViewsDir($projectDir) . self::WIDGET_FILE;
     }
 
     public static function getServiceDir($projectDir)

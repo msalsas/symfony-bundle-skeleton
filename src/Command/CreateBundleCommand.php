@@ -179,6 +179,7 @@ class CreateBundleCommand extends Command
         $this->createBundleMessagesEnFile($domainName, $bundleName);
         $this->createBundleMessagesEsFile($domainName, $bundleName);
         $this->createBundleViewsDir($domainName, $bundleName);
+        $this->createBundleWidgetFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -400,6 +401,18 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
+    private function createBundleWidgetFile($domainName, $bundleName)
+    {
+        $dir = $this->getViewsDir($domainName, $bundleName);
+        $filename = $this->getBundleNameWithUnderscores($domainName, $bundleName) . '_widget.html.twig';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getWidgetPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["_", "-"]);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -435,6 +448,32 @@ class CreateBundleCommand extends Command
         file_put_contents($path, $replace);
 
         return true;
+    }
+
+    private function replaceFileContentsWithLowercase($domainName, $bundleName, $path, $separators)
+    {
+        if (!is_array($separators)) {
+            $separators = [$separators];
+        }
+
+        foreach ($separators as $separator) {
+            $str = file_get_contents($path);
+
+            $replace =  $this->getNameReplacementLowercase($domainName, $bundleName, $str, $separator);
+
+            file_put_contents($path, $replace);
+        }
+
+        return true;
+    }
+
+    private function getNameReplacementLowercase($domainName, $bundleName, $content, $separator)
+    {
+        $replacement =  substr(preg_replace_callback('/([A-Z])/', function($word) use ($separator) {
+            return $separator . strtolower($word[1]);
+        }, $this->getBundleName($domainName, $bundleName)), 1);
+
+        return str_replace("acme{$separator}foo", $replacement, $content);
     }
 
     private function getDependencyInjectionDir($domainName, $bundleName)
@@ -516,6 +555,11 @@ class CreateBundleCommand extends Command
         $bundleFullName = $this->getBundleFullName($domainName, $bundleName);
 
         return substr($bundleFullName, 0, strlen($bundleFullName) - 6);
+    }
+
+    private function getBundleNameWithUnderscores($domainName, $bundleName)
+    {
+        return str_replace("-", "_", $domainName . "_" . substr($bundleName, 0, strlen($bundleName) - 7));
     }
 
     private function getBundleSkeletonDir($domainName, $bundleName)
