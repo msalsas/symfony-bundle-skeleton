@@ -29,6 +29,10 @@ class CreateBundleUtils
     const WIDGET_FILE = 'acme_foo_widget.html.twig';
     const SERVICE_DIR = 'Service/';
     const TEST_DIR = 'Test/';
+    const COMPOSER_FILE = 'composer.json';
+    const README_FILE = 'README.md';
+    const LICENSE_FILE = 'LICENSE';
+    const GIT_IGNORE_FILE = '.gitignore';
 
     public static function getRootDir($projectDir)
     {
@@ -153,5 +157,25 @@ class CreateBundleUtils
     public static function getTestDir($projectDir)
     {
         return self::getRootDir($projectDir) . self::TEST_DIR;
+    }
+
+    public static function getComposerPath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::COMPOSER_FILE;
+    }
+
+    public static function getReadmePath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::README_FILE;
+    }
+
+    public static function getLicensePath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::LICENSE_FILE;
+    }
+
+    public static function getGitIgnorePath($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::GIT_IGNORE_FILE;
     }
 }

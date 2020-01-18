@@ -182,6 +182,10 @@ class CreateBundleCommand extends Command
         $this->createBundleWidgetFile($domainName, $bundleName);
         $this->createBundleServiceDir($domainName, $bundleName);
         $this->createBundleTestDir($domainName, $bundleName);
+        $this->createBundleComposerFile($domainName, $bundleName);
+        $this->createBundleReadmeFile($domainName, $bundleName);
+        $this->createBundleLicenseFile($domainName, $bundleName);
+        $this->createBundleGitIgnoreFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -413,6 +417,62 @@ class CreateBundleCommand extends Command
         $dir = $this->getTestsDir($domainName, $bundleName);
 
         return $this->createDir($dir);
+    }
+
+    private function createBundleComposerFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = 'composer.json';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getComposerPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContents($domainName, $bundleName, $path);
+
+        return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["/", "_"]);
+    }
+
+    private function createBundleReadmeFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = 'README.md';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getReadmePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContents($domainName, $bundleName, $path);
+
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["/", "_"]);
+
+        $str = file_get_contents($path);
+        $replace = str_replace('acme', $domainName, $str);
+        file_put_contents($path, $replace);
+    }
+
+    private function createBundleLicenseFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = 'LICENSE';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getLicensePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return true;
+    }
+
+    private function createBundleGitIgnoreFile($domainName, $bundleName)
+    {
+        $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
+        $filename = '.gitignore';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getGitIgnorePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return true;
     }
 
     private function getPath($dir, $filename)
