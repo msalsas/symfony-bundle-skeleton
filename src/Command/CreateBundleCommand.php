@@ -198,30 +198,16 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
-    private function createDir($dir)
-    {
-        if (!mkdir($dir, 0755, true)) {
-            die('Error creating directory ' . $dir);
-        }
-
-        return true;
-    }
-
     private function createBundleMainFile($domainName, $bundleName)
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
         $filename = $this->getBundleFullName($domainName, $bundleName) . '.php';
-        $path = $dir . self::SEPARATOR . $filename;
-        $oldFilename = CreateBundleUtils::getMainFilePath($this->projectDir);
+        $path = $this->getPath($dir, $filename);
 
-        if (!copy($oldFilename, $path)) {
-            die('Error renaming file ' . $oldFilename);
-        }
+        $oldPath = CreateBundleUtils::getMainFilePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
 
-        $str = file_get_contents($path);
-        $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $str);
-        $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
-        file_put_contents($path, $replace);
+        $this->replaceFileContents($domainName, $bundleName, $path);
 
         return true;
     }
@@ -255,7 +241,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getExtensionPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
         return $this->replaceFileContents($domainName, $bundleName, $path);
     }
@@ -269,7 +255,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getConfigurationPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
         return $this->replaceFileContents($domainName, $bundleName, $path);
     }
@@ -318,7 +304,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getServicesPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
         return $this->replaceFileContents($domainName, $bundleName, $path);
     }
@@ -379,7 +365,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getMessagesEnPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        return $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+        return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
     }
 
     private function createBundleMessagesEsFile($domainName, $bundleName)
@@ -391,7 +377,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getMessagesEsPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        return $this->replaceFileContentsWithUnderscores($domainName, $bundleName, $path);
+        return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
     }
 
     private function createBundleViewsDir($domainName, $bundleName)
@@ -418,6 +404,15 @@ class CreateBundleCommand extends Command
         return $dir . self::SEPARATOR . $filename;
     }
 
+    private function createDir($dir)
+    {
+        if (!mkdir($dir, 0755, true)) {
+            die('Error creating directory ' . $dir);
+        }
+
+        return true;
+    }
+
     private function copyFile($oldPath, $path)
     {
         if (!copy($oldPath, $path)) {
@@ -431,20 +426,6 @@ class CreateBundleCommand extends Command
         $replace = str_replace('AcmeFoo', $this->getBundleName($domainName, $bundleName), $str);
         $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $replace);
         $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
-        file_put_contents($path, $replace);
-
-        return true;
-    }
-
-    private function replaceFileContentsWithUnderscores($domainName, $bundleName, $path)
-    {
-        $str = file_get_contents($path);
-
-        $replacement =  substr(preg_replace_callback('/([A-Z])/', function($word) {
-            return '_' . strtolower($word[1]);
-        }, $this->getBundleName($domainName, $bundleName)), 1);
-        $replace = str_replace('acme_foo', $replacement, $str);
-
         file_put_contents($path, $replace);
 
         return true;
