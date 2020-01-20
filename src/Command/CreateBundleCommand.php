@@ -79,6 +79,10 @@ class CreateBundleCommand extends Command
             // see https://symfony.com/doc/current/components/console/console_arguments.html
             ->addArgument('domain-name', InputArgument::OPTIONAL, 'The domain name of the new bundle. E.g. "Acme"')
             ->addArgument('bundle-name', InputArgument::OPTIONAL, 'The bundle name. E.g. "FooBundle"')
+            ->addArgument('bundle-description', InputArgument::OPTIONAL, 'The bundle description. E.g. "This bundle adds support for ..."')
+            ->addArgument('bundle-keywords', InputArgument::OPTIONAL, 'The bundle keywords. E.g. "foo, bar"')
+            ->addArgument('your-name', InputArgument::OPTIONAL, 'Your name. E.g. "John Doe"')
+            ->addArgument('your-email', InputArgument::OPTIONAL, 'Your email. E.g. "johndoe@email.com"')
         ;
     }
 
@@ -106,7 +110,13 @@ class CreateBundleCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if (null !== $input->getArgument('domain-name') && null !== $input->getArgument('bundle-name')) {
+        if (
+            null !== $input->getArgument('domain-name') &&
+            null !== $input->getArgument('bundle-name') &&
+            null !== $input->getArgument('bundle-description') &&
+            null !== $input->getArgument('bundle-keywords') &&
+            null !== $input->getArgument('your-name')  &&
+            null !== $input->getArgument('your-email')) {
             return;
         }
 
@@ -115,27 +125,30 @@ class CreateBundleCommand extends Command
             'If you prefer to not use this interactive wizard, provide the',
             'arguments required by this command as follows:',
             '',
-            ' $ php bin/console skeleton-bundle:create domain-name bundle-name',
+            ' $ php bin/console skeleton-bundle:create domain-name bundle-name bundle-description bundle-keywords your-name your-email',
             '',
             'Now we\'ll ask you for the value of all the missing command arguments.',
         ]);
 
-        // Ask for the domain-name if it's not defined
-        $domainName = $input->getArgument('domain-name');
-        if (null !== $domainName) {
-            $this->io->text(' > <info>Domain name</info>: '.$domainName);
-        } else {
-            $domainName = $this->io->ask('Domain name', null, [$this->validator, 'validateDomainName']);
-            $input->setArgument('domain-name', $domainName);
-        }
+        // Ask for arguments if they are not defined
+        $this->askForArgument($input, 'domain-name', 'The domain name', 'validateDomainName');
+        $this->askForArgument($input, 'bundle-name', 'The bundle name', 'validateBundleName');
+        $this->askForArgument($input, 'bundle-description', 'The bundle description', 'validateBundleDescription');
+        $this->askForArgument($input, 'bundle-keywords', 'The bundle keywords. Caution! Type it this ["foo", "bar"]', 'validateBundleKeywords');
+        $this->askForArgument($input, 'your-name', 'Your Full Name', 'validateFullName');
+        $this->askForArgument($input, 'your-email', 'Your Email', 'validateEmail');
 
-        // Ask for the bundle-name if it's not defined
-        $bundleName = $input->getArgument('bundle-name');
-        if (null !== $bundleName) {
-            $this->io->text(' > <info>Bundle Name</info>: '.u('*')->repeat(u($bundleName)->length()));
+    }
+
+    private function askForArgument(InputInterface $input, $key, $text, $validationMethod)
+    {
+        // Ask for argument if it's not defined
+        $argument = $input->getArgument($key);
+        if (null !== $argument) {
+            $this->io->text(" > <info>{$text}</info>: ".u('*')->repeat(u($argument)->length()));
         } else {
-            $bundleName = $this->io->ask('Bundle Name', null, [$this->validator, 'validateBundleName']);
-            $input->setArgument('bundle-name', $bundleName);
+            $argument = $this->io->ask($text, null, [$this->validator, $validationMethod]);
+            $input->setArgument($key, $argument);
         }
     }
 
@@ -150,6 +163,10 @@ class CreateBundleCommand extends Command
 
         $domainName = $input->getArgument('domain-name');
         $bundleName = $input->getArgument('bundle-name');
+        $bundleDescription = $input->getArgument('bundle-description');
+        $bundleKeywords = $input->getArgument('bundle-keywords');
+        $yourName = $input->getArgument('your-name');
+        $yourEmail = $input->getArgument('your-email');
 
         $domainName = $this->sanitizeDomainName($domainName);
         $bundleName = $this->sanitizeBundleName($bundleName);
@@ -158,7 +175,6 @@ class CreateBundleCommand extends Command
         $this->validateBundleData($domainName, $bundleName);
 
         $this->createBundleSkeletonDir($domainName, $bundleName);
-        //TODO: Create the bundle skeleton files
         $this->createBundleMainFile($domainName, $bundleName);
         $this->createBundleControllerFile($domainName, $bundleName);
         $this->createBundleDependencyInjectionDir($domainName, $bundleName);
@@ -182,7 +198,7 @@ class CreateBundleCommand extends Command
         $this->createBundleWidgetFile($domainName, $bundleName);
         $this->createBundleServiceDir($domainName, $bundleName);
         $this->createBundleTestDir($domainName, $bundleName);
-        $this->createBundleComposerFile($domainName, $bundleName);
+        $this->createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords);
         $this->createBundleReadmeFile($domainName, $bundleName);
         $this->createBundleLicenseFile($domainName, $bundleName);
         $this->createBundleGitIgnoreFile($domainName, $bundleName);
@@ -215,7 +231,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getMainFilePath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContents($domainName, $bundleName, $path);
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
 
         return true;
     }
@@ -230,7 +246,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getControllerPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        return $this->replaceFileContents($domainName, $bundleName, $path);
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleDependencyInjectionDir($domainName, $bundleName)
@@ -251,7 +267,7 @@ class CreateBundleCommand extends Command
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
-        return $this->replaceFileContents($domainName, $bundleName, $path);
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleConfigurationFile($domainName, $bundleName)
@@ -265,7 +281,7 @@ class CreateBundleCommand extends Command
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
-        return $this->replaceFileContents($domainName, $bundleName, $path);
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleEntityDir($domainName, $bundleName)
@@ -314,7 +330,7 @@ class CreateBundleCommand extends Command
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
 
-        return $this->replaceFileContents($domainName, $bundleName, $path);
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleDocDir($domainName, $bundleName)
@@ -333,7 +349,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getIndexDocPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        return $this->replaceFileContents($domainName, $bundleName, $path);
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundlePublicDir($domainName, $bundleName)
@@ -421,7 +437,7 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
-    private function createBundleComposerFile($domainName, $bundleName)
+    private function createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords)
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
         $filename = 'composer.json';
@@ -430,7 +446,12 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getComposerPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContents($domainName, $bundleName, $path);
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+        $this->replaceFileContents('/acme/', '/' . $domainName . '/', $path);
+        $this->replaceFileContents('Your name', $yourName, $path);
+        $this->replaceFileContents('Your email', $yourEmail, $path);
+        $this->replaceFileContents('Symfony bundle for ...', $bundleDescription, $path);
+        $this->replaceFileContents('["foo", "bar"]', $bundleKeywords, $path);
 
         return $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["/", "_"]);
     }
@@ -444,13 +465,11 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getReadmePath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContents($domainName, $bundleName, $path);
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, ["/", "_"]);
 
-        $str = file_get_contents($path);
-        $replace = str_replace('acme', $domainName, $str);
-        file_put_contents($path, $replace);
+        $this->replaceFileContents('acme', $domainName, $path);
     }
 
     private function createBundleLicenseFile($domainName, $bundleName)
@@ -498,7 +517,7 @@ class CreateBundleCommand extends Command
         $oldPath = CreateBundleUtils::getPhpUnitPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
-        $this->replaceFileContents($domainName, $bundleName, $path);
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function getPath($dir, $filename)
@@ -522,12 +541,23 @@ class CreateBundleCommand extends Command
         }
     }
 
-    private function replaceFileContents($domainName, $bundleName, $path)
+    private function replaceFileContentsBundleFullName($domainName, $bundleName, $path)
     {
         $str = file_get_contents($path);
         $replace = str_replace('AcmeFoo', $this->getBundleName($domainName, $bundleName), $str);
         $replace = str_replace('Acme', $this->getDomainOrBundleName($domainName), $replace);
         $replace = str_replace('FooBundle', $this->getDomainOrBundleName($bundleName), $replace);
+        file_put_contents($path, $replace);
+
+        return true;
+    }
+
+    private function replaceFileContents($search, $replacement, $path)
+    {
+        $str = file_get_contents($path);
+
+        $replace = str_replace($search, $replacement, $str);
+
         file_put_contents($path, $replace);
 
         return true;
@@ -542,7 +572,7 @@ class CreateBundleCommand extends Command
         foreach ($separators as $separator) {
             $str = file_get_contents($path);
 
-            $replace =  $this->getNameReplacementLowercase($domainName, $bundleName, $str, $separator);
+            $replace =  $this->getBundleFullNameReplacementLowercase($domainName, $bundleName, $str, $separator);
 
             file_put_contents($path, $replace);
         }
@@ -550,7 +580,7 @@ class CreateBundleCommand extends Command
         return true;
     }
 
-    private function getNameReplacementLowercase($domainName, $bundleName, $content, $separator)
+    private function getBundleFullNameReplacementLowercase($domainName, $bundleName, $content, $separator)
     {
         $replacement =  substr(preg_replace_callback('/([A-Z])/', function($word) use ($separator) {
             return $separator . strtolower($word[1]);

@@ -77,7 +77,7 @@ class Validator
         }
 
         if (1 !== preg_match('/^[A-Za-z-]+$/', $domainName)) {
-            throw new InvalidArgumentException('The domain name must contain only lowercase latin characters and dashes.');
+            throw new InvalidArgumentException('The domain name must contain only latin characters and dashes.');
         }
 
         return $domainName;
@@ -90,9 +90,31 @@ class Validator
         }
 
         if (1 !== preg_match('/^[A-Za-z-]+$/', $bundleName)) {
-            throw new InvalidArgumentException('The bundle name must contain only lowercase latin characters and dashes.');
+            throw new InvalidArgumentException('The bundle name must contain only latin characters and dashes.');
         }
 
         return $bundleName;
+    }
+
+    public function validateBundleDescription(?string $description): string
+    {
+        if (empty($description)) {
+            throw new InvalidArgumentException('The bundle description can not be empty.');
+        }
+
+        return $description;
+    }
+
+    public function validateBundleKeywords(?string $keywords): string
+    {
+        if (empty($keywords)) {
+            throw new InvalidArgumentException('The bundle keywords can not be empty.');
+        }
+
+        if (1 !== preg_match('/^\[[\s\'"]+[\w]+[\s\'"]+(,[\s\'\"]+[\w]+[\s\'\"]+)*]$/', $keywords)) {
+            throw new InvalidArgumentException('The keywords must be like ["foo", "bar"].');
+        }
+
+        return $keywords;
     }
 }
