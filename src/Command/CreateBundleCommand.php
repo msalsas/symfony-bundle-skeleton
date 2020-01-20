@@ -16,6 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Validator\Constraints\Date;
 use function Symfony\Component\String\u;
 
 /**
@@ -200,7 +201,7 @@ class CreateBundleCommand extends Command
         $this->createBundleTestDir($domainName, $bundleName);
         $this->createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords);
         $this->createBundleReadmeFile($domainName, $bundleName);
-        $this->createBundleLicenseFile($domainName, $bundleName);
+        $this->createBundleLicenseFile($domainName, $bundleName, $yourName);
         $this->createBundleGitIgnoreFile($domainName, $bundleName);
         $this->createBundleTravisFile($domainName, $bundleName);
         $this->createBundlePhpUnitFile($domainName, $bundleName);
@@ -472,7 +473,7 @@ class CreateBundleCommand extends Command
         $this->replaceFileContents('acme', $domainName, $path);
     }
 
-    private function createBundleLicenseFile($domainName, $bundleName)
+    private function createBundleLicenseFile($domainName, $bundleName, $yourName)
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
         $filename = 'LICENSE';
@@ -480,6 +481,9 @@ class CreateBundleCommand extends Command
 
         $oldPath = CreateBundleUtils::getLicensePath($this->projectDir);
         $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContents('Current year', date('Y'), $path);
+        $this->replaceFileContents('Your name', $yourName, $path);
 
         return true;
     }
