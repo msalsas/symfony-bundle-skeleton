@@ -4,6 +4,7 @@ Symfony Bundle Skeleton
 
 
 The "Symfony Bundle Skeleton" is an application for creating reusable Symfony bundles.
+Forked from [symfony/demo][1]
 
 Requirements
 ------------
@@ -51,7 +52,7 @@ $ cd symfony-bundle-skeleton/
 $ ./bin/phpunit
 ```
 
-[1]: https://symfony.com/doc/current/best_practices.html
+[1]: https://github.com/symfony/demo
 [2]: https://symfony.com/doc/current/reference/requirements.html
 [3]: https://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html
 [4]: https://symfony.com/download
