@@ -29,6 +29,14 @@ $ composer install
 Usage
 -----
 
+Run this command to create the new bundle in `/lib`:
+
+```bash
+$ php bin/console skeleton-bundle:create
+```
+
+You will be asked for some needed arguments for the bundle structure and files.
+
 There's no need to configure anything to run the application. If you have
 [installed Symfony][4], run this command and access the application in your
 browser at the given URL (<https://localhost:8000> by default):
