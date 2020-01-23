@@ -1,7 +1,5 @@
 Symfony Bundle Skeleton
 ========================
-***IN PROGRESS (NOT WORKING YET)***
-
 
 The "Symfony Bundle Skeleton" is an application for creating reusable Symfony bundles.
 Forked from [symfony/demo][1]
