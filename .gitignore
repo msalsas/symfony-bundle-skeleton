@@ -33,3 +33,7 @@ yarn-error.log
 ###> Created bundle ###
 /lib
 ###< Created bundle  ###
+
+###> composer.json will be modified with your namespace ###
+composer.json
+###< composer.json will be modified with your namespace ###
