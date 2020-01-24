@@ -205,6 +205,7 @@ class CreateBundleCommand extends Command
         $this->createBundleGitIgnoreFile($domainName, $bundleName);
         $this->createBundleTravisFile($domainName, $bundleName);
         $this->createBundlePhpUnitFile($domainName, $bundleName);
+        $this->updateComposerMainFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -522,6 +523,15 @@ class CreateBundleCommand extends Command
         $this->copyFile($oldPath, $path);
 
         $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function updateComposerMainFile($domainName, $bundleName)
+    {
+        $path = CreateBundleUtils::getComposerMainFile($this->projectDir);
+
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, '/');
     }
 
     private function getPath($dir, $filename)

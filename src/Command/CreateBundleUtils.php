@@ -191,4 +191,9 @@ class CreateBundleUtils
         return self::getRootDir($projectDir) . self::PHP_UNIT_FILE;
     }
 
+    public static  function getComposerMainFile($projectDir)
+    {
+        return $projectDir . '/' .  self::COMPOSER_FILE;
+    }
+
 }
