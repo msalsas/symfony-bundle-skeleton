@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Acme\FooBundle;
+namespace Acme\FooBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
