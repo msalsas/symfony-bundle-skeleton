@@ -2,7 +2,8 @@
 
 namespace App\Acme\FooBundle;
 
-class AcmeFooBundle
-{
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+class AcmeFooBundle extends Bundle
+{
 }
