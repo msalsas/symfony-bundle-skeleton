@@ -35,7 +35,7 @@
             <argument key="$service" type="service" id="acme_foo.service"/>
         </service>
 
-        <!-- TODO: Add the alias for your services here -->
+        <!-- TODO: Add the alias for your controllers here -->
         <service id="Acme\FooBundle\Controller\AcmeFooController" alias="acme_foo.controller" public="true"/>
         <!-- End Controller -->
     </services>

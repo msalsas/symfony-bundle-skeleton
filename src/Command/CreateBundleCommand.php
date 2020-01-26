@@ -198,6 +198,7 @@ class CreateBundleCommand extends Command
         $this->createBundleViewsDir($domainName, $bundleName);
         $this->createBundleWidgetFile($domainName, $bundleName);
         $this->createBundleServiceDir($domainName, $bundleName);
+        $this->createBundleServiceFile($domainName, $bundleName);
         $this->createBundleTestDir($domainName, $bundleName);
         $this->createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords);
         $this->createBundleReadmeFile($domainName, $bundleName);
@@ -430,6 +431,18 @@ class CreateBundleCommand extends Command
         $dir = $this->getServiceDir($domainName, $bundleName);
 
         return $this->createDir($dir);
+    }
+
+    private function createBundleServiceFile($domainName, $bundleName)
+    {
+        $dir = $this->getServiceDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::SERVICE_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getServicePath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleTestDir($domainName, $bundleName)

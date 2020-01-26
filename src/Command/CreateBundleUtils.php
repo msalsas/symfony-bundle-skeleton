@@ -28,6 +28,7 @@ class CreateBundleUtils
     const VIEWS_DIR = 'views/';
     const WIDGET_FILE = 'acme_foo_widget.html.twig';
     const SERVICE_DIR = 'Service/';
+    const SERVICE_FILE = 'Service.php';
     const TEST_DIR = 'Test/';
     const COMPOSER_FILE = 'composer.json';
     const README_FILE = 'README.md';
@@ -154,6 +155,11 @@ class CreateBundleUtils
     public static function getServiceDir($projectDir)
     {
         return self::getRootDir($projectDir) . self::SERVICE_DIR;
+    }
+
+    public static function getServicePath($projectDir)
+    {
+        return self::getServiceDir($projectDir) . self::SERVICE_FILE;
     }
 
     public static function getTestDir($projectDir)

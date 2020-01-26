@@ -17,7 +17,7 @@ class AcmeFooController extends AbstractController
         $this->service = $service;
     }
 
-    public function sum(RequestStack $requestStack, $a, $b)
+    public function foo(RequestStack $requestStack, $a, $b)
     {
         $request = $requestStack->getCurrentRequest();
 
@@ -27,7 +27,7 @@ class AcmeFooController extends AbstractController
 
         try {
             // TODO: Your service call
-            $result = $this->service->sum($a, $b);
+            $result = $this->service->foo($a, $b);
         } catch (AccessDeniedException $e) {
             // TODO: Catch exception access denied
             return $this->json($e->getMessage(), $e->getCode());
