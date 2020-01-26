@@ -29,7 +29,8 @@ class CreateBundleUtils
     const WIDGET_FILE = 'acme_foo_widget.html.twig';
     const SERVICE_DIR = 'Service/';
     const SERVICE_FILE = 'Service.php';
-    const TEST_DIR = 'Test/';
+    const TESTS_DIR = 'Tests/';
+    const BOOTSTRAP_FILE = 'bootstrap.php';
     const COMPOSER_FILE = 'composer.json';
     const README_FILE = 'README.md';
     const LICENSE_FILE = 'LICENSE';
@@ -164,7 +165,12 @@ class CreateBundleUtils
 
     public static function getTestDir($projectDir)
     {
-        return self::getRootDir($projectDir) . self::TEST_DIR;
+        return self::getRootDir($projectDir) . self::TESTS_DIR;
+    }
+
+    public static function getBootstrapPath($projectDir)
+    {
+        return self::getTestDir($projectDir) . self::BOOTSTRAP_FILE;
     }
 
     public static function getComposerPath($projectDir)

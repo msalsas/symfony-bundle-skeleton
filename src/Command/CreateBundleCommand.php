@@ -200,6 +200,7 @@ class CreateBundleCommand extends Command
         $this->createBundleServiceDir($domainName, $bundleName);
         $this->createBundleServiceFile($domainName, $bundleName);
         $this->createBundleTestDir($domainName, $bundleName);
+        $this->createBundleTestsBootstrapFile($domainName, $bundleName);
         $this->createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords);
         $this->createBundleReadmeFile($domainName, $bundleName);
         $this->createBundleLicenseFile($domainName, $bundleName, $yourName);
@@ -443,6 +444,16 @@ class CreateBundleCommand extends Command
         $this->copyFile($oldPath, $path);
 
         return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function createBundleTestsBootstrapFile($domainName, $bundleName)
+    {
+        $dir = $this->getTestsDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::BOOTSTRAP_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getBootstrapPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
     }
 
     private function createBundleTestDir($domainName, $bundleName)
