@@ -2,6 +2,7 @@
 
 namespace Acme\FooBundle\Service;
 
+use Acme\FooBundle\Entity\Car;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -46,8 +47,15 @@ class Service
      */
     protected $integerBar;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $token, RequestStack $requestStack, TranslatorBagInterface $translator, $bar, $integerFoo, $integerBar)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        TokenStorageInterface $token,
+        RequestStack $requestStack,
+        TranslatorBagInterface $translator,
+        $bar,
+        $integerFoo,
+        $integerBar
+    ) {
         $this->em = $em;
         $this->token = $token;
         $this->request = $requestStack->getCurrentRequest();
@@ -60,5 +68,15 @@ class Service
     public function foo($a, $b)
     {
         return 'This is an uncertain ' . $this->bar . ' output' . ($a + $b) * $this->integerFoo / $this->integerBar;
+    }
+
+    public function createCar(Car $car)
+    {
+        $user = $this->token->getToken()->getUser();
+        $car->setUser($user);
+        $this->em->persist($car);
+        $this->em->flush();
+
+        return $car;
     }
 }
