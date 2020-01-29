@@ -8,6 +8,13 @@ class Car
     protected $brand;
     protected $model;
     protected $user;
+    protected $createdAt;
+
+    public function __construct()
+    {
+        $now = new \DateTime();
+        $this->createdAt = $now->getTimestamp();
+    }
 
     public function getId()
     {
@@ -47,5 +54,15 @@ class Car
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
 }
