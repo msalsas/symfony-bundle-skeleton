@@ -51,9 +51,10 @@ class AcmeFooController extends AbstractController
         try {
             // TODO: Example using DTO
             $carDTO = CarDTO::fromRequest($request);
-            $car = CarDTO::toEntity($carDTO);
+            $brand = $carDTO->getBrand();
+            $model = $carDTO->getModel();
 
-            $car = $this->service->createCar($car);
+            $car = $this->service->createCar($brand, $model);
 
             $carDTO = CarDTO::toDTO($car);
             $response = CarDTO::toResponse($carDTO);

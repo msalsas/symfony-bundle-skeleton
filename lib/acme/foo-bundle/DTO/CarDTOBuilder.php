@@ -2,8 +2,6 @@
 
 namespace Acme\FooBundle\DTO;
 
-use Acme\FooBundle\Entity\Car;
-
 class CarDTOBuilder
 {
     protected $id;
@@ -34,15 +32,6 @@ class CarDTOBuilder
     public function build()
     {
         return new CarDTO(
-            $this->id,
-            $this->brand,
-            $this->model
-        );
-    }
-
-    public function buildEntity()
-    {
-        return new Car(
             $this->id,
             $this->brand,
             $this->model

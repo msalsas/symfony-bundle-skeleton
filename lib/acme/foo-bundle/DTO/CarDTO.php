@@ -43,17 +43,6 @@ class CarDTO implements \JsonSerializable
         return $response;
     }
 
-    public static function toEntity(CarDTO $carDTO)
-    {
-        $builder = new CarDTOBuilder();
-
-        return $builder
-            ->withId($carDTO->getId())
-            ->withBrand($carDTO->getBrand())
-            ->withModel($carDTO->getModel())
-            ->buildEntity();
-    }
-
     public static function toDTO(Car $car)
     {
         $builder = new CarDTOBuilder();

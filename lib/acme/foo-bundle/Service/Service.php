@@ -70,10 +70,15 @@ class Service
         return 'This is an uncertain ' . $this->bar . ' output' . ($a + $b) * $this->integerFoo / $this->integerBar;
     }
 
-    public function createCar(Car $car)
+    public function createCar($brand, $model)
     {
+        $car = new Car();
         $user = $this->token->getToken()->getUser();
+
+        $car->setBrand($brand);
+        $car->setModel($model);
         $car->setUser($user);
+
         $this->em->persist($car);
         $this->em->flush();
 
