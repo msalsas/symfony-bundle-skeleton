@@ -135,7 +135,7 @@ class CreateBundleCommand extends Command
         $this->askForArgument($input, 'domain-name', 'The domain name', 'validateDomainName');
         $this->askForArgument($input, 'bundle-name', 'The bundle name', 'validateBundleName');
         $this->askForArgument($input, 'bundle-description', 'The bundle description', 'validateBundleDescription');
-        $this->askForArgument($input, 'bundle-keywords', 'The bundle keywords. Caution! Type it this ["foo", "bar"]', 'validateBundleKeywords');
+        $this->askForArgument($input, 'bundle-keywords', 'The bundle keywords. Caution! Type it like this ["foo", "bar"]', 'validateBundleKeywords');
         $this->askForArgument($input, 'your-name', 'Your Full Name', 'validateFullName');
         $this->askForArgument($input, 'your-email', 'Your Email', 'validateEmail');
 
