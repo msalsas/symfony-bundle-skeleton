@@ -20,7 +20,7 @@ class ServiceTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     protected $userMock;
     protected $tokenStorageMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setDefaultMocks();
