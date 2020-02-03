@@ -30,6 +30,9 @@ class CreateBundleUtils
     const SERVICE_DIR = 'Service/';
     const SERVICE_FILE = 'Service.php';
     const TESTS_DIR = 'Tests/';
+    const MOCKS_DIR = 'Mock/';
+    const USER_MOCK_FILE = 'UserMock.php';
+    const SERVICE_TEST_FILE = 'ServiceTest.php';
     const BOOTSTRAP_FILE = 'bootstrap.php';
     const COMPOSER_FILE = 'composer.json';
     const README_FILE = 'README.md';
@@ -166,6 +169,21 @@ class CreateBundleUtils
     public static function getTestDir($projectDir)
     {
         return self::getRootDir($projectDir) . self::TESTS_DIR;
+    }
+
+    public static function getMockDir($projectDir)
+    {
+        return self::getTestDir($projectDir) . self::MOCKS_DIR;
+    }
+
+    public static function getUserMockPath($projectDir)
+    {
+        return self::getMockDir($projectDir) . self::USER_MOCK_FILE;
+    }
+
+    public static function getServiceTestPath($projectDir)
+    {
+        return self::getTestDir($projectDir) . self::SERVICE_TEST_FILE;
     }
 
     public static function getBootstrapPath($projectDir)

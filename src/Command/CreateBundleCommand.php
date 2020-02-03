@@ -207,6 +207,9 @@ class CreateBundleCommand extends Command
         $this->createBundleServiceDir($domainName, $bundleName);
         $this->createBundleServiceFile($domainName, $bundleName);
         $this->createBundleTestDir($domainName, $bundleName);
+        $this->createBundleMockDir($domainName, $bundleName);
+        $this->createBundleUserMockFile($domainName, $bundleName);
+        $this->createBundleServiceTestFile($domainName, $bundleName);
         $this->createBundleTestsBootstrapFile($domainName, $bundleName);
         $this->createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords);
         $this->createBundleReadmeFile($domainName, $bundleName);
@@ -470,6 +473,37 @@ class CreateBundleCommand extends Command
         return $this->createDir($dir);
     }
 
+    private function createBundleMockDir($domainName, $bundleName)
+    {
+        $dir = $this->getMocksDir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleUserMockFile($domainName, $bundleName)
+    {
+        $dir = $this->getMocksDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::USER_MOCK_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getUserMockPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function createBundleServiceTestFile($domainName, $bundleName)
+    {
+        $dir = $this->getTestsDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::SERVICE_TEST_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getServiceTestPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
     private function createBundleComposerFile($domainName, $bundleName, $yourName, $yourEmail, $bundleDescription, $bundleKeywords)
     {
         $dir = $this->getBundleSkeletonDir($domainName, $bundleName);
@@ -702,6 +736,11 @@ class CreateBundleCommand extends Command
     private function getTestsDir($domainName, $bundleName)
     {
         return $this->getBundleSkeletonDir($domainName, $bundleName) . '/Tests';
+    }
+
+    private function getMocksDir($domainName, $bundleName)
+    {
+        return $this->getTestsDir($domainName, $bundleName) . '/Mock';
     }
 
     private function getBundleFullName($domainName, $bundleName)
