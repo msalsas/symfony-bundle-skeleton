@@ -111,7 +111,7 @@ class Validator
             throw new InvalidArgumentException('The bundle keywords can not be empty.');
         }
 
-        if (1 !== preg_match('/^\[[\s\'"]+[\w]+[\s\'"]+(,[\s\'\"]+[\w]+[\s\'\"]+)*]$/', $keywords)) {
+        if (1 !== preg_match('/^\[[\s"]+[\w]+[\s"]+(,[\s\"]+[\w]+[\s\"]+)*]$/', $keywords)) {
             throw new InvalidArgumentException('The keywords must be like ["foo", "bar"].');
         }
 

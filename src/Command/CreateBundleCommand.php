@@ -118,6 +118,13 @@ class CreateBundleCommand extends Command
             null !== $input->getArgument('bundle-keywords') &&
             null !== $input->getArgument('your-name')  &&
             null !== $input->getArgument('your-email')) {
+
+            $this->validator->validateDomainName($input->getArgument('domain-name'));
+            $this->validator->validateBundleName($input->getArgument('bundle-name'));
+            $this->validator->validateBundleDescription($input->getArgument('bundle-description'));
+            $this->validator->validateBundleKeywords($input->getArgument('bundle-keywords'));
+            $this->validator->validateFullName($input->getArgument('your-name'));
+            $this->validator->validateEmail($input->getArgument('your-email'));
             return;
         }
 
