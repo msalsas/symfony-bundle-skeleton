@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\FooBundle;
+namespace Acme\FooBundle\Controller;
 
 use Acme\FooBundle\DTO\CarDTO;
 use Acme\FooBundle\Service\Service;

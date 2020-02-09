@@ -37,7 +37,7 @@ class AcmeFooExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('doctrine', $doctrineConfig);
         // TODO: Set custom twig config
         $twigConfig = [];
-        $twigConfig['globals']['acme_foo_bar_service'] = "@acme_foo.bar_service";
+        $twigConfig['globals']['acme_foo_bar_service'] = "@acme_foo.service";
         $twigConfig['paths'][__DIR__.'/../Resources/views'] = "acme_foo";
         $twigConfig['paths'][__DIR__.'/../Resources/public'] = "acme_foo.public";
         $container->prependExtensionConfig('twig', $twigConfig);
