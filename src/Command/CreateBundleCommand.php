@@ -218,6 +218,8 @@ class CreateBundleCommand extends Command
         $this->createBundleTravisFile($domainName, $bundleName);
         $this->createBundlePhpUnitFile($domainName, $bundleName);
         $this->updateComposerMainFile($domainName, $bundleName);
+        $this->updateBundlesMainFile($domainName, $bundleName);
+        $this->updatePackageMainFile($domainName, $bundleName);
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
@@ -599,6 +601,30 @@ class CreateBundleCommand extends Command
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, '/');
     }
 
+    private function updateBundlesMainFile($domainName, $bundleName)
+    {
+        $path = CreateBundleUtils::getBundlesMainFile($this->projectDir);
+
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+
+        $str = file_get_contents($path);
+        $replace = str_replace('#', '', $str);
+        file_put_contents($path, $replace);
+    }
+
+    private function updatePackageMainFile($domainName, $bundleName)
+    {
+        $oldPath = CreateBundleUtils::getPackageMainFile($this->projectDir);
+
+        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $oldPath, ["/", "_"]);
+
+        $dir = substr($oldPath, 0, 13);
+        $filename = $this->getBundleNameWithUnderscores($domainName, $bundleName) . '.yaml';
+        $path = $this->getPath($dir, $filename);
+
+        $this->moveFile($oldPath, $path);
+    }
+
     private function getPath($dir, $filename)
     {
         return $dir . self::SEPARATOR . $filename;
@@ -616,6 +642,13 @@ class CreateBundleCommand extends Command
     private function copyFile($oldPath, $path)
     {
         if (!copy($oldPath, $path)) {
+            die('Error renaming file ' . $oldPath);
+        }
+    }
+
+    private function moveFile($oldPath, $path)
+    {
+        if (!rename($oldPath, $path)) {
             die('Error renaming file ' . $oldPath);
         }
     }

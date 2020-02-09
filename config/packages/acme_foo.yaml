@@ -1,0 +1,7 @@
+acme_foo:
+  user_provider: \App\Entity\User
+  bar:
+    - acme_foo.bar.ipsum
+    - acme_foo.bar.lorem
+  integer_foo: 50
+  integer_bar: 2

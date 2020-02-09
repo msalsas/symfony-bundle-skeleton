@@ -35,6 +35,10 @@ class CreateBundleUtils
     const SERVICE_TEST_FILE = 'ServiceTest.php';
     const BOOTSTRAP_FILE = 'bootstrap.php';
     const COMPOSER_FILE = 'composer.json';
+    const BUNDLES_DIR = 'config/';
+    const BUNDLES_FILE = 'bundles.php';
+    const PACKAGE_DIR = 'config/packages/';
+    const PACKAGE_FILE = 'acme_foo.yaml';
     const README_FILE = 'README.md';
     const LICENSE_FILE = 'LICENSE';
     const GIT_IGNORE_FILE = '.gitignore';
@@ -226,4 +230,13 @@ class CreateBundleUtils
         return $projectDir . '/' .  self::COMPOSER_FILE;
     }
 
+    public static  function getBundlesMainFile($projectDir)
+    {
+        return $projectDir . '/' .  self::BUNDLES_DIR . self::BUNDLES_FILE;
+    }
+
+    public static  function getPackageMainFile($projectDir)
+    {
+        return $projectDir . '/' .  self::PACKAGE_DIR . self::PACKAGE_FILE;
+    }
 }
