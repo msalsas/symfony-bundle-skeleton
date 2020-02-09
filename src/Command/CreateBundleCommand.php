@@ -227,6 +227,7 @@ class CreateBundleCommand extends Command
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
         shell_exec('composer install');
+        shell_exec('cd ' . $this->getBundleSkeletonDir($domainName, $bundleName) . ' && composer install && git init');
 
         $event = $stopwatch->stop('create-bundle-command');
         if ($output->isVerbose()) {
