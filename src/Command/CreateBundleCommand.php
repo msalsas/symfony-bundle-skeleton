@@ -189,6 +189,7 @@ class CreateBundleCommand extends Command
         $this->createBundleExtensionFile($domainName, $bundleName);
         $this->createBundleConfigurationFile($domainName, $bundleName);
         $this->createBundleEntityDir($domainName, $bundleName);
+        $this->createBundleEntityFile($domainName, $bundleName);
         $this->createBundleResourcesDir($domainName, $bundleName);
         $this->createBundleConfigDir($domainName, $bundleName);
         $this->createBundleDoctrineDir($domainName, $bundleName);
@@ -305,6 +306,18 @@ class CreateBundleCommand extends Command
         $dir = $this->getEntityDir($domainName, $bundleName);
 
         return $this->createDir($dir);
+    }
+
+    private function createBundleEntityFile($domainName, $bundleName)
+    {
+        $dir = $this->getEntityDir($domainName, $bundleName);
+        $filename = 'Car.php';
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getEntityPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
 
     private function createBundleResourcesDir($domainName, $bundleName)
@@ -618,7 +631,7 @@ class CreateBundleCommand extends Command
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $oldPath, ["/", "_"]);
 
-        $dir = substr($oldPath, 0, 13);
+        $dir = substr($oldPath, 0, -14);
         $filename = $this->getBundleNameWithUnderscores($domainName, $bundleName) . '.yaml';
         $path = $this->getPath($dir, $filename);
 
