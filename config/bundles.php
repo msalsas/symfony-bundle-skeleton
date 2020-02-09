@@ -15,5 +15,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     HtmlSanitizer\Bundle\HtmlSanitizerBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
-    #Acme\FooBundle\AcmeFooBundle::class => ['all' => true],
+    Acme\FooBundle\AcmeFooBundle::class => ['all' => true],
 ];
