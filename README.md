@@ -35,6 +35,34 @@ $ php bin/console skeleton-bundle:create
 
 You will be asked for some needed arguments for the bundle structure and files.
 
+Then, just cd to the new created bundle:
+
+```bash
+$ cd lib/your-namespace # E.g. cd lib/acme/foo-bundle
+```
+And check your already created git repository:
+
+```bash
+$ git status
+```
+Now you can begin to develop over this path (your bundle path).
+Check for the TODO's comments in all files and make the needed changes for your bundle.
+
+There is just one file you have to edit outside your bundle path: 
+
+`config/packages/{your-bundle}.yaml`
+
+This file includes your bundle configuration.
+
+Once your ready, create a new repository (Github or whatever) and add the remote url to your git config:
+
+```bash
+$ git add .
+$ git commit -m "First commit"
+$ git remote add origin your-repository-url.git
+$ git push -u origin master
+```
+
 There's no need to configure anything to run the application. If you have
 [installed Symfony][4], run this command and access the application in your
 browser at the given URL (<https://localhost:8000> by default):
