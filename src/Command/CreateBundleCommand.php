@@ -226,13 +226,7 @@ class CreateBundleCommand extends Command
 
         $this->io->success(sprintf('The bundle skeleton was successfully created at: /lib/%s/%s', $domainName, $bundleName));
 
-        $process = new Process(['composer install']);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        echo $process->getOutput();
+        shell_exec('composer install');
 
         $event = $stopwatch->stop('create-bundle-command');
         if ($output->isVerbose()) {
