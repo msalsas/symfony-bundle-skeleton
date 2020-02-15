@@ -26,8 +26,8 @@ class Configuration implements ConfigurationInterface
                 ->isRequired()
                 ->scalarPrototype()
                     ->defaultValue([
-                        'acme_foo.bar.ipsum',
-                        'acme_foo.bar.lorem',
+                        'acme_foo.ipsum',
+                        'acme_foo.lorem',
                     ])
                 ->end()
             ->end()
