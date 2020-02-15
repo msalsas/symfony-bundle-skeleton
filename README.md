@@ -86,6 +86,10 @@ Add this snippet into `templates/blog/index.html.twig` before `<article class="p
 {{ {your-namespace}_widget.bar('https://github.com/msalsas/symfony-bundle-skeleton', 34) }}
 ```
 
+Go to <http://127.0.0.1:8000/en/blog/>
+
+You will see the logic of the `bar` macro applied to each blog post
+
 Tests
 -----
 
