@@ -17,6 +17,7 @@ class CreateBundleUtils
     const RESOURCES_DIR = 'Resources/';
     const CONFIG_DIR = 'config/';
     const DOCTRINE_DIR = 'doctrine/';
+    const ENTITY_ORM_FILE = 'Car.orm.xml';
     const ROUTING_DIR = 'routing/';
     const SERVICES_FILE = 'services.xml';
     const DOC_DIR = 'doc/';
@@ -110,6 +111,11 @@ class CreateBundleUtils
     public static function getDoctrineDir($projectDir)
     {
         return self::getConfigDir($projectDir) . self::DOCTRINE_DIR;
+    }
+
+    public static function getEntityOrmPath($projectDir)
+    {
+        return self::getDoctrineDir($projectDir) . self::ENTITY_ORM_FILE;
     }
 
     public static function getRoutingDir($projectDir)

@@ -196,6 +196,7 @@ class CreateBundleCommand extends Command
         $this->createBundleResourcesDir($domainName, $bundleName);
         $this->createBundleConfigDir($domainName, $bundleName);
         $this->createBundleDoctrineDir($domainName, $bundleName);
+        $this->createBundleEntityOrmFile($domainName, $bundleName);
         $this->createBundleRoutingDir($domainName, $bundleName);
         $this->createBundleServicesFile($domainName, $bundleName);
         $this->createBundleDocDir($domainName, $bundleName);
@@ -357,6 +358,19 @@ class CreateBundleCommand extends Command
         $dir = $this->getDoctrineDir($domainName, $bundleName);
 
         return $this->createDir($dir);
+    }
+
+    private function createBundleEntityOrmFile($domainName, $bundleName)
+    {
+        $dir = $this->getDoctrineDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::ENTITY_ORM_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getEntityOrmPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+        $this->replaceFileContents('acme', $domainName, $path);
     }
 
     private function createBundleRoutingDir($domainName, $bundleName)
