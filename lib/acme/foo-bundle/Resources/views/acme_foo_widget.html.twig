@@ -1,8 +1,11 @@
-{% macro bar(link) %}
+{% macro bar(link, num) %}
     <div class="acme-foo-widget-wrapper">
         <div class="acme-foo-widget">
             <div class="acme-foo-link-wrapper">
                 <a id="acme-foo-link" href="{{ link }}">{{ 'acme_foo.bar'|trans }}</a>
+            </div>
+            <div class="acme-foo-service-wrapper">
+                <code>{{ msalsas_voting_bar_service.foo(num, random(50)) }}</code>
             </div>
         </div>
     </div>
