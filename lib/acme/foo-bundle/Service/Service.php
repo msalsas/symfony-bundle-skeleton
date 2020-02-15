@@ -67,7 +67,7 @@ class Service
 
     public function foo($a, $b)
     {
-        return 'This is an uncertain ' . $this->bar[0] . ' output' . ($a + $b) * $this->integerFoo / $this->integerBar;
+        return 'This is an uncertain ' . $this->bar[0] . ' output ' . ($a + $b) * $this->integerFoo / $this->integerBar;
     }
 
     public function createCar($brand, $model)
