@@ -192,6 +192,7 @@ class CreateBundleCommand extends Command
         $this->createBundleConfigurationFile($domainName, $bundleName);
         $this->createBundleEntityDir($domainName, $bundleName);
         $this->createBundleEntityFile($domainName, $bundleName);
+        $this->createBundleEntityRepositoryFile($domainName, $bundleName);
         $this->createBundleResourcesDir($domainName, $bundleName);
         $this->createBundleConfigDir($domainName, $bundleName);
         $this->createBundleDoctrineDir($domainName, $bundleName);
@@ -316,10 +317,22 @@ class CreateBundleCommand extends Command
     private function createBundleEntityFile($domainName, $bundleName)
     {
         $dir = $this->getEntityDir($domainName, $bundleName);
-        $filename = 'Car.php';
+        $filename = CreateBundleUtils::ENTITY_FILE;
         $path = $this->getPath($dir, $filename);
 
         $oldPath = CreateBundleUtils::getEntityPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function createBundleEntityRepositoryFile($domainName, $bundleName)
+    {
+        $dir = $this->getEntityDir($domainName, $bundleName);
+        $filename = CreateBundleUtils::ENTITY_REPOSITORY_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getEntityRepositoryPath($this->projectDir);
         $this->copyFile($oldPath, $path);
 
         return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);

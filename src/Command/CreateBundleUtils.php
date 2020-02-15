@@ -12,6 +12,7 @@ class CreateBundleUtils
     const EXTENSION_FILE = 'AcmeFooExtension.php';
     const CONFIGURATION_FILE = 'Configuration.php';
     const ENTITY_DIR = 'Entity/';
+    const ENTITY_REPOSITORY_FILE = 'CarRepository.php';
     const ENTITY_FILE = 'Car.php';
     const RESOURCES_DIR = 'Resources/';
     const CONFIG_DIR = 'config/';
@@ -89,6 +90,11 @@ class CreateBundleUtils
     public static function getEntityPath($projectDir)
     {
         return self::getEntityDir($projectDir) . self::ENTITY_FILE;
+    }
+
+    public static function getEntityRepositoryPath($projectDir)
+    {
+        return self::getEntityDir($projectDir) . self::ENTITY_REPOSITORY_FILE;
     }
 
     public static function getResourcesDir($projectDir)
