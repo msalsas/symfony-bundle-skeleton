@@ -70,6 +70,17 @@ class Service
         return 'This is an uncertain ' . $this->translator->trans($this->bar[0]) . ' output ' . ($a + $b) * $this->integerFoo / $this->integerBar;
     }
 
+    public function getCars()
+    {
+        $user = $this->token->getToken()->getUser();
+        if (!method_exists($user, 'getUsername')) {
+            $user = null;
+        }
+        $carRepository = $this->em->getRepository(Car::class);
+
+        return $carRepository->findBy(['user' => $user]);
+    }
+
     public function createCar($brand, $model)
     {
         $car = new Car();
@@ -77,7 +88,9 @@ class Service
 
         $car->setBrand($brand);
         $car->setModel($model);
-        $car->setUser($user);
+        if (method_exists($user, 'getUsername')) {
+            $car->setUser($user);
+        }
 
         $this->em->persist($car);
         $this->em->flush();
