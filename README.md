@@ -76,8 +76,10 @@ If you don't have the Symfony binary installed, run `php -S localhost:8000 -t pu
 to use the built-in PHP web server or [configure a web server][3] like Nginx or
 Apache to run the application.
 
-Example
--------
+Examples
+--------
+
+**Macro example:**
 
 Add this snippet into `templates/blog/index.html.twig` before `<article class="post">`:
 
@@ -89,6 +91,16 @@ Add this snippet into `templates/blog/index.html.twig` before `<article class="p
 Go to <http://127.0.0.1:8000/en/blog/>
 
 You will see the logic of the `bar` macro applied to each blog post
+
+**Persisting entities example:**
+
+There is an already created example with a Car entity. If you run:
+
+```bash
+$ php bin/console doctrine:schema:update --force
+```
+
+a new table `{you-domain}_car` will be created
 
 Tests
 -----
