@@ -1,3 +1,5 @@
 acme_foo:
     # TODO: Add your translations here
     bar: Ejemplo
+    ipsum: Ipsum
+    lorem: Lorem
