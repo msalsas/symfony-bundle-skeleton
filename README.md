@@ -76,6 +76,16 @@ If you don't have the Symfony binary installed, run `php -S localhost:8000 -t pu
 to use the built-in PHP web server or [configure a web server][3] like Nginx or
 Apache to run the application.
 
+Example
+-------
+
+Add this snippet into `templates/blog/index.html.twig` before `<article class="post">`:
+
+```twig
+{% import "@{your-namespace}/{your-namespace}_widget.html.twig" as {your-namespace}_widget %}
+{{ {your-namespace}_widget.bar('https://github.com/msalsas/symfony-bundle-skeleton', 34) }}
+```
+
 Tests
 -----
 
