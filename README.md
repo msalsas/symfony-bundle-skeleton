@@ -102,6 +102,59 @@ $ php bin/console doctrine:schema:update --force
 
 a new table `{you-domain}_car` will be created
 
+To create new entities you can use the created service. E.g. create a route in
+
+`src/Controller/BlogController.php`
+
+with the next action;
+
+```php
+/**
+ * @Route("/car/random", methods="GET", name="create_random_car")
+ **/
+public function postRandomCar(Service $service): Response
+{
+    $cars = ['BMW' => ['Serie 3', 'X5'], 'Mercedes' => ['Benz CLA', 'Benz GLS'], 'Seat' => ['Leon', 'Ibiza'], 'Toyota' => ['Corolla', 'Yaris']];
+    $brand_index = rand(0, 3);
+    $model_index = rand(0,1);
+    $brand = array_keys($cars)[$brand_index];
+    $model = $cars[$brand][$model_index];
+    $service->createCar($brand, $model);
+    $cars = $service->getCars();
+
+    return $this->render('cars/index.html.twig', ['cars' => $cars]);
+}
+``` 
+*Use the service from your namespace*
+
+And now create a new twig template:
+
+`templates/cars/index.html.twig`
+
+and add the next content:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body_id 'blog_index' %}
+
+{% block main %}
+    <h2>Create random car:</h2>
+    <h3><a href="{{ path('create_random_car') }}">Create</a></h3>
+    <br/>
+    <h2>Created cars:</h2>
+    {% for car in cars %}
+        <h3>Car from {{ car.user and car.user.username ? car.user.username : 'anon.' }}</h3>
+        <p>Model: {{ car.model }}</p>
+        <p>Brand: {{ car.brand }}</p>
+    {% endfor %}
+{% endblock %}
+```
+
+If you go to <http://127.0.0.1:8000/en/blog/car/random> you will see an already created car and a link to create random cars.
+As you click on the link, new random cars are created.
+If you go to the backend and log in and then go back and create new cars, you will see that the related user is the logged in user.
+
 Tests
 -----
 
