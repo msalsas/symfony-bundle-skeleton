@@ -643,7 +643,9 @@ class CreateBundleCommand extends Command
 
         $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
 
-        $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, '/');
+        $str = file_get_contents($path);
+        $replace = str_replace('/acme/foo-bundle', '/' . $domainName . '/' . $bundleName, $str);
+        file_put_contents($path, $replace);
     }
 
     private function updateBundlesMainFile($domainName, $bundleName)
