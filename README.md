@@ -84,8 +84,8 @@ Examples
 Add this snippet into `templates/blog/index.html.twig` before `<article class="post">`:
 
 ```twig
-{% import "@{your-namespace}/{your-namespace}_widget.html.twig" as {your-namespace}_widget %}
-{{ {your-namespace}_widget.bar('https://github.com/msalsas/symfony-bundle-skeleton', 34) }}
+{% import "@{your_namespace}/{your_namespace}_widget.html.twig" as {your_namespace}_widget %}
+{{ {your_namespace}_widget.bar('https://github.com/msalsas/symfony-bundle-skeleton', 34) }}
 ```
 
 Go to <http://127.0.0.1:8000/en/blog/>
