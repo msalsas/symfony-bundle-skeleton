@@ -11,6 +11,9 @@ class CreateBundleUtils
     const DEPENDENCY_INJECTION_DIR = 'DependencyInjection/';
     const EXTENSION_FILE = 'AcmeFooExtension.php';
     const CONFIGURATION_FILE = 'Configuration.php';
+    const DTO_DIR = 'DTO/';
+    const CAR_DTO_FILE = 'CarDTO.php';
+    const CAR_DTO__BUILDER_FILE = 'CarDTOBuilder.php';
     const ENTITY_DIR = 'Entity/';
     const ENTITY_REPOSITORY_FILE = 'CarRepository.php';
     const ENTITY_FILE = 'Car.php';
@@ -81,6 +84,21 @@ class CreateBundleUtils
     public static function getConfigurationPath($projectDir)
     {
         return self::getDependencyInjectionDir($projectDir) . self::CONFIGURATION_FILE;
+    }
+
+    public static function getDTODir($projectDir)
+    {
+        return self::getRootDir($projectDir) . self::DTO_DIR;
+    }
+
+    public static function getCarDTOPath($projectDir)
+    {
+        return self::getDTODir($projectDir) . self::CAR_DTO_FILE;
+    }
+
+    public static function getCarDTOBuilderPath($projectDir)
+    {
+        return self::getDTODir($projectDir) . self::CAR_DTO__BUILDER_FILE;
     }
 
     public static function getEntityDir($projectDir)

@@ -190,6 +190,9 @@ class CreateBundleCommand extends Command
         $this->createBundleDependencyInjectionDir($domainName, $bundleName);
         $this->createBundleExtensionFile($domainName, $bundleName);
         $this->createBundleConfigurationFile($domainName, $bundleName);
+        $this->createBundleDTODir($domainName, $bundleName);
+        $this->createBundleCarDTOFile($domainName, $bundleName);
+        $this->createBundleCarDTOBuilderFile($domainName, $bundleName);
         $this->createBundleEntityDir($domainName, $bundleName);
         $this->createBundleEntityFile($domainName, $bundleName);
         $this->createBundleEntityRepositoryFile($domainName, $bundleName);
@@ -304,6 +307,37 @@ class CreateBundleCommand extends Command
         $this->copyFile($oldPath, $path);
 
         $this->replaceFileContentsWithLowercase($domainName, $bundleName, $path, "_");
+
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function createBundleDTODir($domainName, $bundleName)
+    {
+        $dir = $this->getDTODir($domainName, $bundleName);
+
+        return $this->createDir($dir);
+    }
+
+    private function createBundleCarDTOFile($domainName, $bundleName)
+    {
+        $dir = $this->getDTODir($domainName, $bundleName);
+        $filename = CreateBundleUtils::CAR_DTO_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getCarDTOPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
+
+        return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
+    }
+
+    private function createBundleCarDTOBuilderFile($domainName, $bundleName)
+    {
+        $dir = $this->getDTODir($domainName, $bundleName);
+        $filename = CreateBundleUtils::CAR_DTO__BUILDER_FILE;
+        $path = $this->getPath($dir, $filename);
+
+        $oldPath = CreateBundleUtils::getCarDTOBuilderPath($this->projectDir);
+        $this->copyFile($oldPath, $path);
 
         return $this->replaceFileContentsBundleFullName($domainName, $bundleName, $path);
     }
@@ -751,6 +785,11 @@ class CreateBundleCommand extends Command
     private function getDependencyInjectionDir($domainName, $bundleName)
     {
         return $this->getBundleSkeletonDir($domainName, $bundleName) . '/DependencyInjection';
+    }
+
+    private function getDTODir($domainName, $bundleName)
+    {
+        return $this->getBundleSkeletonDir($domainName, $bundleName) . '/DTO';
     }
 
     private function getEntityDir($domainName, $bundleName)
