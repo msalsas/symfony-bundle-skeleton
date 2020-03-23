@@ -6,7 +6,7 @@ use Acme\FooBundle\Service\Service;
 use Acme\FooBundle\Tests\Mock\UserMock;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Prophecy\Argument\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -24,6 +24,7 @@ class ServiceTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     {
         parent::setUp();
         $this->setDefaultMocks();
+        $this->setUserMocks();
         $this->translator = new Translator('en');
     }
 
