@@ -37,3 +37,7 @@ yarn-error.log
 ###> composer.json will be modified with your namespace ###
 composer.json
 ###< composer.json will be modified with your namespace ###
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
