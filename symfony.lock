@@ -38,6 +38,9 @@
     "doctrine/dbal": {
         "version": "v2.9.3"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.12",
         "recipe": {
@@ -102,6 +105,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.2"
+    },
     "egulias/email-validator": {
         "version": "2.1.13"
     },
@@ -120,8 +126,14 @@
             ".php_cs.dist"
         ]
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "laminas/laminas-code": {
+        "version": "4.4.3"
     },
     "league/uri-parser": {
         "version": "1.4.1"
@@ -226,6 +238,9 @@
     "symfony/dependency-injection": {
         "version": "v4.3.3"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.4.0"
+    },
     "symfony/doctrine-bridge": {
         "version": "v4.3.3"
     },
@@ -290,6 +305,9 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/http-client-contracts": {
+        "version": "v2.4.0"
+    },
     "symfony/http-foundation": {
         "version": "v4.3.3"
     },
@@ -346,6 +364,9 @@
     "symfony/options-resolver": {
         "version": "v4.3.3"
     },
+    "symfony/password-hasher": {
+        "version": "v5.3.8"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {
@@ -386,11 +407,20 @@
     "symfony/polyfill-php73": {
         "version": "v1.12.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.23.1"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
+    },
     "symfony/process": {
         "version": "v4.3.3"
     },
     "symfony/property-access": {
         "version": "v4.3.3"
+    },
+    "symfony/property-info": {
+        "version": "v5.3.8"
     },
     "symfony/routing": {
         "version": "4.2",
