@@ -7,7 +7,7 @@ Forked from [symfony/demo][1]
 Requirements
 ------------
 
-  * PHP 7.2.9 or higher;
+  * PHP 7.4 or higher;
   * PDO-SQLite PHP extension enabled;
   * and the [usual Symfony application requirements][2].
 
