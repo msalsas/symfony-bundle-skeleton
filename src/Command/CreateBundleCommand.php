@@ -58,6 +58,7 @@ class CreateBundleCommand extends Command
     private $passwordEncoder;
     private $validator;
     private $projectDir;
+    private $users;
 
     public function __construct(KernelInterface $kernel, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, Validator $validator, UserRepository $users)
     {

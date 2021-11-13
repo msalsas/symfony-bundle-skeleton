@@ -22,5 +22,5 @@ jobs:
                     extensions: intl
             -   run: composer install --no-progress
 #            -   run: composer codestyle
-            -   run: composer phpstan
+#            -   run: composer phpstan
             -   run: composer tests
