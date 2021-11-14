@@ -15,26 +15,26 @@
         "doctrine/doctrine-migrations-bundle": "^1.3|^2.0",
         "doctrine/orm": "^2.5.11",
         "erusev/parsedown": "^1.6",
-        "sensio/framework-extra-bundle": "^5.1",
+        "sensio/framework-extra-bundle": "^5.6",
         "symfony/apache-pack": "^1.0",
-        "symfony/asset": "5.0.*",
-        "symfony/console": "5.0.*",
-        "symfony/dotenv": "5.0.*",
+        "symfony/asset": "^5.3",
+        "symfony/console": "^5.3",
+        "symfony/dotenv": "^5.3",
         "symfony/expression-language": "*",
         "symfony/flex": "^1.1",
-        "symfony/form": "5.0.*",
+        "symfony/form": "^5.3",
         "symfony/framework-bundle": "*",
-        "symfony/intl": "5.0.*",
-        "symfony/mailer": "5.0.*",
+        "symfony/intl": "^5.3",
+        "symfony/mailer": "^5.3",
         "symfony/monolog-bundle": "^3.1",
         "symfony/polyfill-intl-messageformatter": "^1.12",
-        "symfony/security-bundle": "5.0.*",
-        "symfony/string": "5.0.*",
-        "symfony/translation": "5.0.*",
-        "symfony/twig-bundle": "5.0.*",
-        "symfony/validator": "5.0.*",
+        "symfony/security-bundle": "^5.3",
+        "symfony/string": "^5.3",
+        "symfony/translation": "^5.3",
+        "symfony/twig-bundle": "^5.3",
+        "symfony/validator": "^5.3",
         "symfony/webpack-encore-bundle": "^1.4",
-        "symfony/yaml": "5.0.*",
+        "symfony/yaml": "^5.3",
         "tgalopin/html-sanitizer-bundle": "^1.1",
         "twig/intl-extra": "^3.0",
         "twig/twig": "^3.0"
@@ -42,14 +42,20 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.2",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "friendsofphp/php-cs-fixer": "3.0.x-dev",
-        "symfony/browser-kit": "5.0.*",
-        "symfony/css-selector": "5.0.*",
-        "symfony/debug-bundle": "5.0.*",
+        "friendsofphp/php-cs-fixer": "*",
+        "phpunit/phpunit": "^9.5",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-doctrine": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-symfony": "^1.0",
+        "symfony/browser-kit": "^5.3",
+        "symfony/css-selector": "^5.3",
+        "symfony/debug-bundle": "^5.3",
         "symfony/maker-bundle": "^1.11",
-        "symfony/phpunit-bridge": "5.0.*",
-        "symfony/stopwatch": "5.0.*",
-        "symfony/web-profiler-bundle": "5.0.*"
+        "symfony/phpunit-bridge": "^5.3",
+        "symfony/stopwatch": "^5.3",
+        "symfony/web-profiler-bundle": "^5.3"
     },
     "config": {
         "platform": {
@@ -82,7 +88,21 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "tests": "vendor/bin/phpunit tests/",
+        "phpstan": [
+            "vendor/bin/phpstan analyse src/ --level=3",
+            "vendor/bin/phpstan analyse -c tests/phpstan.neon tests/ --level=3"
+        ],
+        "codestyle": "vendor/bin/php-cs-fixer fix --dry-run --verbose --show-progress=none",
+        "codestyle-fix": "vendor/bin/php-cs-fixer fix",
+
+        "drop-test-db": "bin/console doctrine:schema:drop --force --env=test",
+        "create-test-db": "bin/console doctrine:schema:create --env=test",
+        "test": "bin/phpunit --testdox",
+        "test-unit": "bin/phpunit --testdox --testsuite Unit",
+        "test-functional": "bin/phpunit --testdox --testsuite Functional"
+
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -90,7 +110,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.0.*"
+            "require": "^5.3"
         }
     }
 }

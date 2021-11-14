@@ -4,6 +4,12 @@ Symfony Bundle Skeleton
 The "Symfony Bundle Skeleton" is an application for creating reusable Symfony bundles.
 Forked from [symfony/demo][1]
 
+[![Build Status](https://travis-ci.org/survos/SurvosLocationBundle.svg?branch=master)](https://travis-ci.org/survos/SurvosLocationBundle) [![Code Coverage](https://scrutinizer-ci.com/g/survos/SurvosLocationBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/survos/SurvosLocationBundle/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/survos/SurvosLocationBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/survos/SurvosLocationBundle/?branch=master) [![Latest Stable Version](https://poser.pugx.org/survos/voting-bundle/v/stable.svg)](https://packagist.org/packages/survos/voting-bundle)
+
+@todo:
+
+https://tomasvotruba.com/blog/2020/07/27/how-to-switch-from-yaml-xml-configs-to-php-today-with-migrify/
+
 Requirements
 ------------
 
