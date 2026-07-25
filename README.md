@@ -1,6 +1,14 @@
 Symfony Bundle Skeleton
 ========================
 
+> **⚠️ Historical note (2021).** This skeleton targets **Symfony 5.0 / PHP 7.4** and generates
+> bundles using the classic structure (`Resources/config`, XML service & Doctrine mapping,
+> `Extension` + `Configuration` classes). Since **Symfony 6.1**, `AbstractBundle` collapses almost
+> all of that boilerplate, and `sensio/framework-extra-bundle` is abandoned in favor of native
+> PHP 8 attributes. **For new bundles on Symfony 6.1+, prefer `AbstractBundle`** — see the
+> [official docs on creating a bundle](https://symfony.com/doc/current/bundles.html). This repo is
+> kept as-is for reference.
+
 The "Symfony Bundle Skeleton" is an application for creating reusable Symfony bundles.
 Forked from [symfony/demo][1]
 
