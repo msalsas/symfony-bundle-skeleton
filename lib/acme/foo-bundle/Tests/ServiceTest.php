@@ -4,7 +4,7 @@ namespace Acme\FooBundle\Tests;
 
 use Acme\FooBundle\Service\Service;
 use Acme\FooBundle\Tests\Mock\UserMock;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +33,8 @@ class ServiceTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $emRepositoryMock = $this->getMockBuilder(ObjectRepository::class)->getMock();
         $this->emMock = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $this->emMock->method('getRepository')->willReturn($emRepositoryMock);
+
+
 
         $requestMock = $this->getMockBuilder(Request::class)->getMock();
         $this->requestStackMock = $this->getMockBuilder(RequestStack::class)
